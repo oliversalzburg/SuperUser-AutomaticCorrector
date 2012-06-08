@@ -161,6 +161,7 @@ EmbedFunctionOnPage('CorrectBody', function(original_body) {
 			.replace(/([0-9]+\))/gi, function(match) { return match.replace(')', '.'); })
 			.replace(/\(([0-9]+)\./gi, function(match) { return match.replace('.', ')'); })
 			.replace(/^\w\)/img, function(match) { return "  " + ( match.substr(0,1).toUpperCase().charCodeAt(0) - 64 ) + "."; })
+			.replace(/^-(\w)/gim, function(match,letter) { return "- " + letter; })
 			;return body;
 		},
 
