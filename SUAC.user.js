@@ -134,13 +134,13 @@ EmbedFunctionOnPage('CorrectBody', function(original_body) {
 			.replace(/Any idea(s)?[?]/gi, 'Do you have any idea how I can solve this?')
 			;return body;
 		},
-		
+		/*
 		RemoveSpacesBeforeInterpunction : function (body) {
 			body = body
 			.replace(/(http:\/\/[a-zA-Z0-9\/.%_#~-]*)?([ ]*[.:!,]+[ ]*)/gi, function (orig,look,match) { return look?orig:match.trim().substring(0,1) + ' '; })
 			;return body;
 		},
-		
+		*/
 		RemoveSentences : function(body) {
 			body = body
 			.replace(/I have this problem[.:!, ]*/gi, '')
