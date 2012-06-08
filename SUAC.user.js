@@ -2,56 +2,56 @@
 // @name          Super User Automatic Corrector
 // @author        Tom Wijsman
 // @version       1.0
-// @description	  Using Jakub Hampl & Nathan Osman's framework to create a Super User specific Automatic Corrector.
+// @description   Using Jakub Hampl & Nathan Osman's framework to create a Super User specific Automatic Corrector.
 // @include       http://superuser.com/*
 // @include       http://www.superuser.com/*
 // ==/UserScript==
 
 function EmbedCodeOnPage(javascript_code) {
-    var code_element = document.createElement('script');
-    code_element.type = 'text/javascript';
-    code_element.textContent = javascript_code;
-    document.getElementsByTagName('head')[0].appendChild(code_element);
+	var code_element = document.createElement('script');
+	code_element.type = 'text/javascript';
+	code_element.textContent = javascript_code;
+	document.getElementsByTagName('head')[0].appendChild(code_element);
 }
 
 function EmbedFunctionOnPage(function_name, function_contents) {
-    EmbedCodeOnPage(function_contents.toString().replace(/function ?/, 'function ' + function_name));
+	EmbedCodeOnPage(function_contents.toString().replace(/function ?/, 'function ' + function_name));
 }
 
 function EmbedFunctionOnPageAndExecute(function_contents) {
-    EmbedCodeOnPage("(" + function_contents.toString() + ")()");
+	EmbedCodeOnPage("(" + function_contents.toString() + ")()");
 }
 
 EmbedFunctionOnPage('LoadDependentScript', function(script_filename, callback) {
-    var script    = document.createElement('script');
-    script.type   = 'text/javascript';
-    script.src    = script_filename;
-    script.onload = callback;
-    document.getElementsByTagName('head')[0].appendChild(script);
+	var script    = document.createElement('script');
+	script.type   = 'text/javascript';
+	script.src    = script_filename;
+	script.onload = callback;
+	document.getElementsByTagName('head')[0].appendChild(script);
 });
 
 EmbedFunctionOnPage('AddToolbarButton', function(toolbar, icon, tooltip, callback) {
-    var left = toolbar.find('li:not(.wmd-help-button):last').css('left');
-    
-    if(left !== null)
-        left = parseInt(left.replace(/\D/g, '')) + 50;
-    else
-        left = 400;
-    
-    var button = $('<li class="wmd-button" style="left: ' + left + 'px; background-image: url(' + icon + '); background-repeat: no-repeat; background-position: center center;" title="' + tooltip + '"></li>');
-    
-    button.click(callback);
-    
-    toolbar.append(button);
-    
+	var left = toolbar.find('li:not(.wmd-help-button):last').css('left');
+
+	if(left !== null)
+		left = parseInt(left.replace(/\D/g, '')) + 50;
+	else
+		left = 400;
+
+	var button = $('<li class="wmd-button" style="left: ' + left + 'px; background-image: url(' + icon + '); background-repeat: no-repeat; background-position: center center;" title="' + tooltip + '"></li>');
+
+	button.click(callback);
+
+	toolbar.append(button);
+
 });
 
 EmbedFunctionOnPage('CorrectTitle', function(title) {
-    return title.replace(/^([a-z])/g, function(match) { return match.toUpperCase(); }).replace(/(i|I)ssue/g, ''); //.replace(/([A-Z]{2,})/g, function(i) { return i.toLowerCase() });
+	return title.replace(/^([a-z])/g, function(match) { return match.toUpperCase(); }).replace(/(i|I)ssue/g, ''); //.replace(/([A-Z]{2,})/g, function(i) { return i.toLowerCase() });
 });
 
 EmbedFunctionOnPage('CorrectBody', function(original_body) {
-    var corrections = {
+	var corrections = {
 		CorrectCommonMisspellings : function(body) {
 			var replacements = {
 				'dont':'don\'t',
@@ -77,7 +77,7 @@ EmbedFunctionOnPage('CorrectBody', function(original_body) {
 
 			for (var wrong_word in replacements)
 				body = body.replace(new RegExp('\\b' + wrong_word + '\\b', 'gi'), replacements[wrong_word]);
-				
+
 			var endings = {
 				'essisary':'ecessary',
 				'harachters':'haracters',
@@ -90,13 +90,13 @@ EmbedFunctionOnPage('CorrectBody', function(original_body) {
 				'mmount':'mount',
 				'rmenent':'rmanent'
 			};
-			
+
 			for (var wrong_word in endings)
 				body = body.replace(new RegExp(wrong_word + '\\b', 'gi'), endings[wrong_word]);
 
 			return body;
 		},
-		
+
 		GetRidOfSimleys : function (body) {
 			body = body
 			.replace(/:-\)/gi, '').replace(/:\)/gi, '').replace(/:-\(/gi, '').replace(/:\(/gi, '')
@@ -104,13 +104,13 @@ EmbedFunctionOnPage('CorrectBody', function(original_body) {
 			.replace(/:-O/gi, '').replace(/:O/gi, '').replace(/:-S/gi, '').replace(/:S/gi, '')
 			;return body;
 		},
-		
+
 		CorrectFileSizes : function(body) {
 			body = body
 			.replace(/([0-9])(MB|GB)\b/gi, '$1 $2')
 			;return body;
 		},
-		
+
 		CorrectMarks : function(body) {
 			body = body
 			.replace(/\.\.[\.]+/gi, 'SUPERSPECIALDOTFIX')
@@ -124,7 +124,7 @@ EmbedFunctionOnPage('CorrectBody', function(original_body) {
 			.replace(/(?!\w) ([.!?])/gi, '$1') /* Fix (single) space before punctuation mark */
 			;return body;
 		},
-		
+
 		CorrectShortSentences : function(body) {
 			body = body
 			.replace(/Any idea(s)?[?]/gi, 'Do you have any idea how I can solve this?')
@@ -136,7 +136,7 @@ EmbedFunctionOnPage('CorrectBody', function(original_body) {
 			.replace(/(http:\/\/[a-zA-Z0-9\/.%_#~-]*)?([ ]*[.:!,]+[ ]*)/gi, function (orig,look,match) { return look?orig:match.trim().substring(0,1) + ' '; })
 			;return body;
 		},
-		*/
+
 		RemoveSentences : function(body) {
 			body = body
 			.replace(/I have this problem[.:!, ]*/gi, '')
@@ -148,7 +148,7 @@ EmbedFunctionOnPage('CorrectBody', function(original_body) {
 			.replace(/[p|P]lease [h|H]elp[.?!,]*/gi, '')
 			;return body;
 		},
-		
+
 		RemoveHTH : function(body) {
 			return body.replace(/^[A-Za-z ]*hope this helps[A-Za-z ?!.]*$/gim, '');
 		},
@@ -156,7 +156,7 @@ EmbedFunctionOnPage('CorrectBody', function(original_body) {
 		RemoveThankYou : function(body) {
 			return body.replace(/(?:, |many )?(?:thank|k?thn?x(?:bye)?)(?:s|(?: |-)you)?(?: (?:so|very) much)?(?:\s?(?:,|-)(?:[\w\s]+)| :-?\)| a lot| and regards| for(?: any| the)? (?:help|ideas)| in advance)?[.|!]?/i, '');
 		},
-		
+
 		CorrectLists : function(body) {
 			body = body
 			.replace(/([0-9]+\))/gi, function(match) { return match.replace(')', '.'); })
@@ -164,20 +164,20 @@ EmbedFunctionOnPage('CorrectBody', function(original_body) {
 			.replace(/^\w\)/img, function(match) { return "  " + ( match.substr(0,1).toUpperCase().charCodeAt(0) - 64 ) + "."; })
 			;return body;
 		},
-		
+
 		CorrectFirstLetters : function(body) {
 			body = body
 			.replace(/\b([A-Za-z]+)(\.|\?|\!)[ ]+([a-z])/gi, function(_, word, one, two) { return word + one + ' ' + two.toUpperCase(); })
 			.replace(/(^|(?:\. ))([a-z])/gm, function(match,prefix,letter) { return prefix + letter.toUpperCase(); }) /* Capitalize the first letter of each new sentence. */
 			;return body;
 		},
-		
+
 		FixEnumerations : function(body) {
 		  body = body
 			.replace(/and(?=[^,.!?\n]*?and)/gi, function(match) { return ','; }) /* Replace repetitive use of 'and' with comma. */
 			;return body;
 		},
-		
+
 		CorrectScriptMistakes : function(body) {
 			body = body
 			.replace(/,[ ]+I\.e./gi, ', i.e.')
@@ -185,11 +185,11 @@ EmbedFunctionOnPage('CorrectBody', function(original_body) {
 			;return body;
 		},
 	};
-	
+
 	for (var correction in corrections)
 		original_body = corrections[correction](original_body);
 
-    return original_body;
+	return original_body;
 });
 
 EmbedFunctionOnPage('diffString', function(o, n) {
@@ -236,14 +236,14 @@ EmbedFunctionOnPage('diffString', function(o, n) {
 			}
 		}
 	}
-	
+
 	return str.replace(/\b <\/span> \b/gi, '</span> ');
 });
 
 EmbedFunctionOnPage('diff', function(o, n) {
 	var ns = new Object();
 	var os = new Object();
-	
+
 	for (var i = 0; i < n.length; i++) {
 	if (ns[n[i]] == null)
 		ns[n[i]] = {
@@ -252,13 +252,13 @@ EmbedFunctionOnPage('diff', function(o, n) {
 		};
 		ns[n[i]].rows.push(i);
 	}
-	
+
 	for (var i = 0; i < o.length; i++) {
 	if (os[o[i]] == null)
 		os[o[i]] = { rows: new Array(), n: null };
 		os[o[i]].rows.push(i);
 	}
-	
+
 	for (var i in ns) {
 		if (ns[i].rows.length == 1 && typeof(os[i]) != "undefined" && os[i].rows.length == 1) {
 			n[ns[i].rows[0]] = {
@@ -271,7 +271,7 @@ EmbedFunctionOnPage('diff', function(o, n) {
 			};
 		}
 	}
-	
+
 	for (var i = 0; i < n.length - 1; i++) {
 		if (n[i].text != null && n[i + 1].text == null && n[i].row + 1 < o.length && o[n[i].row + 1].text == null && n[i + 1] == o[n[i].row + 1]) {
 			n[i + 1] = {
@@ -284,7 +284,7 @@ EmbedFunctionOnPage('diff', function(o, n) {
 			};
 		}
 	}
-	
+
 	for (var i = n.length - 1; i > 0; i--) {
 		if (n[i].text != null && n[i - 1].text == null && n[i].row > 0 && o[n[i].row - 1].text == null && n[i - 1] == o[n[i].row - 1]) {
 			n[i - 1] = {
@@ -297,7 +297,7 @@ EmbedFunctionOnPage('diff', function(o, n) {
 			};
 		}
 	}
-	
+
 	return {
 		o: o,
 		n: n
@@ -305,28 +305,28 @@ EmbedFunctionOnPage('diff', function(o, n) {
 });
 
 EmbedFunctionOnPageAndExecute(function() {
-    LoadDependentScript('http://files.quickmediasolutions.com/js/jquery.livequery.js', function() {
-        $('.wmd-button-row').livequery(function() {
-            var toolbar = $(this);
-            
-            window.setTimeout(function() {
-                AddToolbarButton(toolbar, 'http://i.stack.imgur.com/wWIIc.png', 'Stack Exchange Post Editor',
-                function() {
-                    var title = toolbar.parents('.post-editor').find('#title');
-                    
-                    if (title.length) {
-                        var new_title = CorrectTitle(title.attr('value'));
-                        title.attr('value', new_title);
-                        $('#question-header .question-hyperlink').text(new_title)
-                    }
-                    
-                    var editor = toolbar.parents('.wmd-container').find('.wmd-input');
+	LoadDependentScript('http://files.quickmediasolutions.com/js/jquery.livequery.js', function() {
+		$('.wmd-button-row').livequery(function() {
+			var toolbar = $(this);
+
+			window.setTimeout(function() {
+				AddToolbarButton(toolbar, 'http://i.stack.imgur.com/wWIIc.png', 'Stack Exchange Post Editor',
+				function() {
+					var title = toolbar.parents('.post-editor').find('#title');
+
+					if (title.length) {
+						var new_title = CorrectTitle(title.attr('value'));
+						title.attr('value', new_title);
+						$('#question-header .question-hyperlink').text(new_title)
+					}
+
+					var editor = toolbar.parents('.wmd-container').find('.wmd-input');
 					var original = editor.val();
 					var corrected = CorrectBody(original);
-                    editor.val(corrected);
+					editor.val(corrected);
 					toolbar.parents('.post-editor').find('.wmd-preview').html(diffString(original, corrected).replace(/\n/g, '<br />'));
-                });               
-            }, 100);   
-        });
-    });
+				});
+			}, 100);
+		});
+	});
 });
