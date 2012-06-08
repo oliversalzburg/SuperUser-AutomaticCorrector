@@ -165,6 +165,8 @@ EmbedFunctionOnPage('CorrectBody', function(original_body) {
 			.replace(/([0-9]+\))/gi, function(match) { return match.replace(')', '.'); })
 			.replace(/\(([0-9]+)\./gi, function(match) { return match.replace('.', ')'); })
 			.replace(/^\w\)/img, function(match) { return "  " + ( match.substr(0,1).toUpperCase().charCodeAt(0) - 64 ) + "."; })
+			.replace(/^ *-(\w)/gim, function(match,letter) { return "- " + letter; })
+			.replace(/:[\r\n ]*[\r\n][\r\n ]*-/g, function(match) { return ":\n\n-"; })
 			;return body;
 		},
 
@@ -176,8 +178,9 @@ EmbedFunctionOnPage('CorrectBody', function(original_body) {
 		},
 
 		FixEnumerations : function(body) {
-		  body = body
-			.replace(/and(?=[^,.!?\n]*?and)/gi, function(match) { return ','; }) /* Replace repetitive use of 'and' with comma. */
+			body = body
+			// XXX Breaks for things like "A and B did X, then A and B did Y, then A and B did Z." and "A, B did X, then A, B did Y, then A and B did Z."
+			//.replace(/ and (?=[^,.!?\n]*? and )/gi, function(match) { return ','; }) /* Replace repetitive use of 'and' with comma. */
 			;return body;
 		},
 
