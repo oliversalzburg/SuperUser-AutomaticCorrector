@@ -55,7 +55,7 @@ EmbedFunctionOnPage('CorrectBody', function(original_body) {
 		CorrectCommonMisspellings : function(body) {
 			var replacements = {
 				'dont':'don\'t',
-				'i( |\')':'I$1',
+				'i( |\')?':'I$1',
 				'teh':'the',
 				'(?:ubunto|ubunut|ubunutu|ubunu|ubntu|ubutnu|uuntu|unbuntu|ubunt|ubutu)':'Ubuntu',
 				'windows phone':'Windows Phone',
