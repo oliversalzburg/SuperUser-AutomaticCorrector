@@ -113,9 +113,8 @@ EmbedFunctionOnPage('CorrectBody', function(original_body) {
 
 		CorrectMarks : function(body) {
 			body = body
-			.replace(/\.\.[\.]+/gi, 'SUPERSPECIALDOTFIX')
+			.replace(/\.\.\.+/gi, 'SUPERSPECIALDOTFIX')
 			.replace(/\.+/gi, '.')
-			.replace(/SUPERSPECIALDOTFIX/gi, '...')
 			.replace(/[.]([ ]+[.]+)+/gi, '.')
 			.replace(/\.\?/gi, '?')
 			.replace(/\.:/gi, ':')
@@ -130,10 +129,10 @@ EmbedFunctionOnPage('CorrectBody', function(original_body) {
 			.replace(/Any idea(s)?[?]/gi, 'Do you have any idea how I can solve this?')
 			;return body;
 		},
-		/*
-		RemoveSpacesBeforeInterpunction : function (body) {
+
+		ProperSpacesAroundPunctuationMarks : function (body) {
 			body = body
-			.replace(/(http:\/\/[a-zA-Z0-9\/.%_#~-]*)?([ ]*[.:!,]+[ ]*)/gi, function (orig,look,match) { return look?orig:match.trim().substring(0,1) + ' '; })
+			.replace(/(((http:\/\/|https:\/\/|ftp:\/\/|www\.)[a-zA-Z0-9\/.%_#~-]*)|(http:\/\/|https:\/\/|ftp:\/\/)?([0-9]+[.]?)+)?([ ]*[.:!,]+[ ]*)/gi, function (orig,look,_,_,_,_,match) { return look?orig:match.trim().substring(0,1) + ' '; })
 			;return body;
 		},
 
@@ -180,8 +179,23 @@ EmbedFunctionOnPage('CorrectBody', function(original_body) {
 
 		CorrectScriptMistakes : function(body) {
 			body = body
+
+			// CorrectFirstLetters
 			.replace(/,[ ]+I\.e./gi, ', i.e.')
+
+			// ProperSpacesAroundPunctuationMarks
 			.replace(/Http:\/\//gi, 'http://')
+			.replace(/Ftp:\/\//gi, 'ftp://')
+			.replace(/Www\./gi, 'www.')
+			.replace(/www\.[ ]/gi, 'www.')
+			.replace(/:[ ]\/\//gi, '://')
+			.repalce(/: \*/gi, ':*')
+			.replace(/\.[ ]+(ac|ad|ae|aero|af|ag|ai|al|am|an|ao|aq|as|asia|at|aw|ax|az|ba|bb|be|bf|bg|bh|bi|biz|bj|bm|bo|br|bs|bt|bw|by|bz|ca|cat|cc|cd|cf|cg|ch|ci|cl|cm|cn|co|com|coop|cr|cu|cv|cx|cz|de|dj|dk|dm|do|dz|ec|edu|ee|eg|es|eu|fi|fm|fo|fr|ga|gd|ge|gf|gg|gh|gi|gl|gm|gov|gp|gq|gr|gs|gw|gy|hk|hm|hn|hr|ht|hu|id|ie|im|in|info|int|io|iq|ir|is|it|je|jo|jobs|jp|kg|ki|km|kn|kr|ky|kz|la|lc|li|lk|ls|lt|lu|lv|ly|ma|mc|md|me|mg|mh|mil|mk|ml|mn|mo|mobi|mp|mq|mr|ms|mu|museum|mv|mw|mx|my|na|name|nc|ne|net|nf|nl|no|nr|nu|org|pa|pe|pf|ph|pk|pl|pm|pn|pr|pro|ps|pt|pw|qa|re|ro|rs|ru|rw|sa|sb|sc|sd|se|sg|sh|si|sk|sl|sm|sn|so|sr|st|su|sy|sz|tc|td|tel|tf|tg|th|tj|tk|tl|tm|tn|to|travel|tt|tv|tw|ua|ug|us|uz|va|vc|vg|vi|vn|vu|wf|ws|yt|xxx)\b/gi, '.$1')
+			.replace(/\.It'/gm, '. It\'')
+
+			// CorrectMarks
+			.replace(/SUPERSPECIALDOTFIX/gi, '...')
+
 			;return body;
 		},
 	};
