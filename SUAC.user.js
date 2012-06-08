@@ -59,7 +59,6 @@ EmbedFunctionOnPage('CorrectBody', function(original_body) {
 				'teh':'the',
 				'(?:ubunto|ubunut|ubunutu|ubunu|ubntu|ubutnu|uuntu|unbuntu|ubunt|ubutu)':'Ubuntu',
 				'windows phone':'Windows Phone',
-				'windows':'Windows',
 				'zune':'Zune',
 				'I (got)':'I have',
 				'whoo?ping':'',
@@ -72,8 +71,13 @@ EmbedFunctionOnPage('CorrectBody', function(original_body) {
 				'therfore':'therefore',
 				'unrestrictive':'nonrestrictive',
 				'thier':'their',
-				'isnt':'isn\'t'
+				'isnt':'isn\'t',
+				'ip':'IP',
+				'micro[s$]oft':'Microsoft',
+				'win(dow[s$])?(XP|vista|7)':'Windows $2'
 			};
+
+			body = body.replace(/\bwindow[s$]/gi, 'Windows');
 
 			for (var wrong_word in replacements)
 				body = body.replace(new RegExp('\\b' + wrong_word + '\\b', 'gi'), replacements[wrong_word]);
