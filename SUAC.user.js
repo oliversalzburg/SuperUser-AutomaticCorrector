@@ -123,9 +123,6 @@ EmbedFunctionOnPage('CorrectBody', function(original_body) {
 			.replace(/[.]([ ]+[.]+)+/gi, '.')
 			.replace(/\.\?/gi, '?')
 			.replace(/\.:/gi, ':')
-			.replace(/\?\?+/gi, '?') /* Fix question mark repetition */
-			.replace(/!!+/gi, '!') /* Fix exclamation mark repettition */
-			.replace(/(?!\w) ([.!?])/gi, '$1') /* Fix (single) space before punctuation mark */
 			;return body;
 		},
 		
