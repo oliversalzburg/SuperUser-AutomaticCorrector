@@ -83,14 +83,10 @@ EmbedFunctionOnPage('CorrectBody', function(original_body) {
 				'harachters':'haracters',
 				'abey':'aybe',
 				'efull':'eful',
-				'gnise':'gnize',
 				'rafic':'raphic',
 				'eparatable':'eparable','eperatable':'eparable','eperable':'eparable',
-				'alises':'alizes',
 				'ylise':'ylize',
-				'terised':'terized',
 				'tivly':'tively',
-				'lised':'lized',
 				'mmount':'mount',
 				'rmenent':'rmanent'
 			};
