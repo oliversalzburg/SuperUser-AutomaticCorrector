@@ -225,7 +225,7 @@ EmbedFunctionOnPage('diffString', function(o, n) {
 				var pre = "";
 
 				for (n = out.n[i].row + 1; n < out.o.length && out.o[n].text == null; n++) {
-					pre += '<span class="diff-delete">' + out.o[n] + oSpace[i].replace(/\n/g, ' ') + "</span>";
+					pre += '<span class="diff-delete">' + out.o[n] + oSpace[n].replace(/\n/g, ' ') + "</span>";
 				}
 				str += " " + out.n[i].text + nSpace[i] + pre;
 			}
