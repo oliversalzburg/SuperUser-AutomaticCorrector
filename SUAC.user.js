@@ -173,7 +173,7 @@ EmbedFunctionOnPage('CorrectBody', function(original_body) {
 
 		FixEnumerations : function(body) {
 		  body = body
-			.replace(/and(?=[^,.!?\n]*?and)/gi, function(match) { return ','; }) /* Replace repetitive use of 'and' with comma. */
+			//.replace(/ and (?=[^,.!?\n]*? and )/gi, function(match) { return ','; }) /* Replace repetitive use of 'and' with comma. */
 			;return body;
 		},
 
