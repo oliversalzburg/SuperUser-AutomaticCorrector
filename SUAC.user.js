@@ -161,13 +161,6 @@ EmbedFunctionOnPage('CorrectBody', function(original_body) {
 			return body.replace(/(?:, |many )?(?:thank|k?thn?x(?:bye)?)(?:s|(?: |-)you)?(?: (?:so|very) much)?(?:\s?(?:,|-)(?:[\w\s]+)| :-?\)| a lot| and regards| for(?: any| the)? (?:help|ideas)| in advance)?[.|!]?/i, '');
 		},
 		
-		CorrectFirstLetters : function(body) {
-			body = body
-			.replace(/\b([A-Za-z]+)(\.|\?|\!)[ ]+([a-z])/gi, function(_, word, one, two) { return word + one + ' ' + two.toUpperCase(); })
-			.replace(/^([a-z])/gim, function(match) { return match.toUpperCase(); })
-			;return body;
-		},
-		
 		CorrectLists : function(body) {
 			body = body
 			.replace(/([0-9]+\))/gi, function(match) { return match.replace(')', '.'); })
@@ -176,15 +169,16 @@ EmbedFunctionOnPage('CorrectBody', function(original_body) {
 			;return body;
 		},
 		
-		FixEnumerations : function(body) {
-		  body = body
-			.replace(/and(?=[^,.!?\n]*?and)/gi, function(match) { return ','; }) /* Replace repetitive use of 'and' with comma. */
+		CorrectFirstLetters : function(body) {
+			body = body
+			.replace(/\b([A-Za-z]+)(\.|\?|\!)[ ]+([a-z])/gi, function(_, word, one, two) { return word + one + ' ' + two.toUpperCase(); })
+			.replace(/(^|(?:\. ))([a-z])/gm, function(match,prefix,letter) { return prefix + letter.toUpperCase(); }) /* Capitalize the first letter of each new sentence. */
 			;return body;
 		},
 		
-		CapitalizeSentences : function(body) {
+		FixEnumerations : function(body) {
 		  body = body
-			.replace(/(^|(?:\. ))([a-z])/gm, function(match,prefix,letter) { return prefix + letter.toUpperCase(); }) /* Capitalize the first letter of each new sentence. */
+			.replace(/and(?=[^,.!?\n]*?and)/gi, function(match) { return ','; }) /* Replace repetitive use of 'and' with comma. */
 			;return body;
 		},
 		
