@@ -55,7 +55,7 @@ EmbedFunctionOnPage('CorrectBody', function(original_body) {
 		CorrectCommonMisspellings : function(body) {
 			var replacements = {
 				'dont':'don\'t',
-				'i( |\')':'I$1',
+				'i( |\')?':'I$1',
 				'teh':'the',
 				'(?:ubunto|ubunut|ubunutu|ubunu|ubntu|ubutnu|uuntu|unbuntu|ubunt|ubutu)':'Ubuntu',
 				'windows phone':'Windows Phone',
@@ -119,6 +119,9 @@ EmbedFunctionOnPage('CorrectBody', function(original_body) {
 			.replace(/[.]([ ]+[.]+)+/gi, '.')
 			.replace(/\.\?/gi, '?')
 			.replace(/\.:/gi, ':')
+			.replace(/\?\?+/gi, '?') /* Fix question mark repetition */
+			.replace(/!!+/gi, '!') /* Fix exclamation mark repettition */
+			.replace(/(?!\w) ([.!?])/gi, '$1') /* Fix (single) space before punctuation mark */
 			;return body;
 		},
 		
@@ -127,13 +130,13 @@ EmbedFunctionOnPage('CorrectBody', function(original_body) {
 			.replace(/Any idea(s)?[?]/gi, 'Do you have any idea how I can solve this?')
 			;return body;
 		},
-		
+		/*
 		RemoveSpacesBeforeInterpunction : function (body) {
 			body = body
 			.replace(/(http:\/\/[a-zA-Z0-9\/.%_#~-]*)?([ ]*[.:!,]+[ ]*)/gi, function (orig,look,match) { return look?orig:match.trim().substring(0,1) + ' '; })
 			;return body;
 		},
-		
+		*/
 		RemoveSentences : function(body) {
 			body = body
 			.replace(/I have this problem[.:!, ]*/gi, '')
@@ -154,18 +157,24 @@ EmbedFunctionOnPage('CorrectBody', function(original_body) {
 			return body.replace(/(?:, |many )?(?:thank|k?thn?x(?:bye)?)(?:s|(?: |-)you)?(?: (?:so|very) much)?(?:\s?(?:,|-)(?:[\w\s]+)| :-?\)| a lot| and regards| for(?: any| the)? (?:help|ideas)| in advance)?[.|!]?/i, '');
 		},
 		
-		CorrectFirstLetters : function(body) {
-			body = body
-			.replace(/\b([A-Za-z]+)(\.|\?|\!)[ ]+([a-z])/gi, function(_, word, one, two) { return word + one + ' ' + two.toUpperCase(); })
-			.replace(/^([a-z])/gim, function(match) { return match.toUpperCase(); })
-			;return body;
-		},
-		
 		CorrectLists : function(body) {
 			body = body
 			.replace(/([0-9]+\))/gi, function(match) { return match.replace(')', '.'); })
 			.replace(/\(([0-9]+)\./gi, function(match) { return match.replace('.', ')'); })
 			.replace(/^\w\)/img, function(match) { return "  " + ( match.substr(0,1).toUpperCase().charCodeAt(0) - 64 ) + "."; })
+			;return body;
+		},
+		
+		CorrectFirstLetters : function(body) {
+			body = body
+			.replace(/\b([A-Za-z]+)(\.|\?|\!)[ ]+([a-z])/gi, function(_, word, one, two) { return word + one + ' ' + two.toUpperCase(); })
+			.replace(/(^|(?:\. ))([a-z])/gm, function(match,prefix,letter) { return prefix + letter.toUpperCase(); }) /* Capitalize the first letter of each new sentence. */
+			;return body;
+		},
+		
+		FixEnumerations : function(body) {
+		  body = body
+			.replace(/and(?=[^,.!?\n]*?and)/gi, function(match) { return ','; }) /* Replace repetitive use of 'and' with comma. */
 			;return body;
 		},
 		
