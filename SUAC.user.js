@@ -182,6 +182,12 @@ EmbedFunctionOnPage('CorrectBody', function(original_body) {
 			;return body;
 		},
 		
+		CapitalizeSentences : function(body) {
+		  body = body
+			.replace(/(^|(?:\. ))([a-z])/gm, function(match,prefix,letter) { return prefix + letter.toUpperCase(); }) /* Capitalize the first letter of each new sentence. */
+			;return body;
+		},
+		
 		CorrectScriptMistakes : function(body) {
 			body = body
 			.replace(/,[ ]+I\.e./gi, ', i.e.')
