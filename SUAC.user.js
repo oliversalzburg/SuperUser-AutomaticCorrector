@@ -55,50 +55,66 @@ EmbedFunctionOnPage('CorrectTitle', function(title) {
 EmbedFunctionOnPage('CorrectBody', function(original_body) {
 	var corrections = {
 		CorrectCommonMisspellings : function(body) {
+		  // This first batch of replacements only applies to tokens inside of word boundaries!
 			var replacements = {
-				'dont':'don\'t',
+				'u':'you',
+				'ur':'your',
 				'i( |\')?':'I$1',
+				'i ?m':'I\'m',
 				'teh':'the',
+				'c(o|u)(s|z)e?':'because',
+				'b4':'before',
+				'w[au]t':'what',
+				'alot':'a lot',
+				'dont':'don\'t',
+				'I (got)':'I have',
+				'whos':'who\'s',
+				'thier':'their',
+				'cud':'could',
+				'pl[sz]':'please',
+				'(can|doesn|don|won|hasn|isn|didn)t':'$1\'t',
 				'(?:ubunto|ubunut|ubunutu|ubunu|ubntu|ubutnu|uuntu|unbuntu|ubunt|ubutu)':'Ubuntu',
 				'windows phone':'Windows Phone',
 				'zune':'Zune',
-				'I (got)':'I have',
 				'whoo?ping':'',
 				'just few':'just a few',
 				'I (never|bought|searched)':'I have $1',
 				'is your done':'is that you are done',
-				'whos':'who\'s',
-				'havent':'haven\'t',
-				'wouldnt':'wouldn\'t',
 				'therfore':'therefore',
 				'unrestrictive':'nonrestrictive',
-				'thier':'their',
-				'isnt':'isn\'t',
-				'ip':'IP',
-				'micro[s$]oft':'Microsoft',
+				'm((icro[s$]oft)|s)':'Microsoft',
 				'win(dow[s$])?(XP|vista|7)':'Windows $2',
-				'co[sz]':'because',
-				'w[au]t':'what',
-				'alot':'a lot'
+				'pl[ |/|-]?sql':'PL/SQL',
+				't[ |/|-]?sql':'T-SQL'
 			};
 			
-			var trademarks = [
-				"AMD", "AppleScript", "ASUS", "ATI", "Bluetooth", "DivX", "DVD", "Eee PC", "FireWire",
-				"GarageBand", "GHz", "iBookstore", "iCal", "iChat", "iLife", "iMac", "iMovie", "iOS", "iPad",
-				"iPhone", "iPhoto", "iPod", "ISP", "iTunes", "iWeb", "iWork", "JavaScript", "jQuery", "Lenovo", 
-				"MacBook", "MacPorts", "MHz", "MobileMe", "MySQL", "Nvidia", "OS X", "PowerBook", "PowerPoint",
-				"QuickTime", "SSD", "TextEdit", "TextMate", "ThinkPad", "Ubuntu", "USB", "VPN", "VMware", "WebKit", "Wi-Fi",
-				"WordPress", "Xcode", "XMLHttpRequest", "Xserve"
-			];
-
 			body = body.replace(/\bwindow[s$]/gi, 'Windows');
 
 			for (var wrong_word in replacements)
 				body = body.replace(new RegExp('\\b' + wrong_word + '\\b', 'gi'), replacements[wrong_word]);
+		
+		  // This second batch of replacements can apply anywhere in the text
+		  var variableReplacements = {
+				'\\b(a)n(?= +(?![aeiou]|HTML|user))':'$1',
+				'\\b(a)(?= +[aeiou](?!ser))':'$1n'
+			};
+			
+			for (var wrong_word in variableReplacements)
+				body = body.replace(new RegExp(wrong_word, 'gi'), variableReplacements[wrong_word]);
+	
+	    // These names will be properly capitalized and excessive (or missing) whitespace inside these terms will be replaced
+  		var trademarks = [
+				"AMD", "Android", "AppleScript", "ASUS", "ATI", "Bluetooth", "DivX", "DVD", "Eclipse", "Eee PC", "FireWire",
+				"GarageBand", "GHz", "Gmail", "Google", "iBookstore", "iCal", "iChat", "iLife", "iMac", "iMovie", "iOS", "IP", "iPad",
+				"iPhone", "iPhoto", "iPod", "ISP", "iTunes", "iWeb", "iWork", "JavaScript", "jQuery", "Lenovo", 
+				"MacBook", "MacPorts", "MHz", "MobileMe", "MySQL", "Nvidia", "Oracle", "OS X", "PayPal", "PowerBook", "PowerPoint",
+				"QuickTime", "SSD", "Stack Overflow", "TextEdit", "TextMate", "ThinkPad", "Ubuntu", "USB", "Vista", "VPN", "VMware", "WebKit", "Wi-Fi",
+				"WordPress", "Xcode", "XMLHttpRequest", "Xserve"
+			];
 
       // Replace trademarks
       for (var trademark in trademarks)
-        body = body.replace(new RegExp('\\b' + trademarks[trademark] + '\\b', 'gi'), trademarks[trademark]);
+        body = body.replace(new RegExp('\\b' + trademarks[trademark].replace( " ", "\w*" ) + '\\b', 'gi'), trademarks[trademark]);
 
 			var endings = {
 				'essisary':'ecessary',
