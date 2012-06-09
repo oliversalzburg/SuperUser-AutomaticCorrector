@@ -25,10 +25,10 @@ function EmbedFunctionOnPageAndExecute(function_contents) {
 }
 
 EmbedFunctionOnPage('LoadDependentScript', function(script_filename, callback) {
-	var script		= document.createElement('script');
-	script.type		= 'text/javascript';
-	script.src		= script_filename;
-	script.onload	= callback;
+	var script = document.createElement('script');
+	script.type = 'text/javascript';
+	script.src = script_filename;
+	script.onload = callback;
 	document.getElementsByTagName('head')[0].appendChild(script);
 });
 
@@ -105,20 +105,15 @@ EmbedFunctionOnPage('CorrectBody', function(original_body) {
 
 			for (var wrong_word in variableReplacements)
 				body = body.replace(new RegExp(wrong_word, 'gi'), variableReplacements[wrong_word]);
-	
-	    // These names will be properly capitalized and excessive (or missing) whitespace inside these terms will be replaced
-  		var trademarks = [
-				"AMD", "Android", "AppleScript", "ASUS", "ATI", "Bluetooth", "CPU", "DivX", "DVD", "Eclipse", "Eee PC", "FireWire",
-				"GarageBand", "GHz", "Gmail", "Google", "iBookstore", "iCal", "iChat", "iLife", "Intel", "iMac", "iMovie", "iOS", "IP", "iPad",
-				"iPhone", "iPhoto", "iPod", "ISP", "iTunes", "iWeb", "iWork", "JavaScript", "jQuery", "Lenovo", 
-				"MacBook", "MacPorts", "MHz", "MobileMe", "MySQL", "NVIDIA", "Oracle", "OS X", "PayPal", "PowerBook", "PowerPoint",
-				"QuickTime", "RAM", "SSD", "Stack Overflow", "TextEdit", "TextMate", "ThinkPad", "Ubuntu", "USB", "Vista", "VPN", "VMware", "WebKit", "Wi-Fi",
-				"WordPress", "Xcode", "XMLHttpRequest", "Xserve"
+
+			// These names will be properly capitalized and excessive (or missing) whitespace inside these terms will be replaced
+			var trademarks = [
+				"AMD", "Android", "AppleScript", "ASUS", "ATI", "Bluetooth", "CPU", "DivX", "DVD", "Eclipse", "Eee PC", "FireWire", "GarageBand", "GHz", "Gmail", "Google", "iBookstore", "iCal", "iChat", "iLife", "Intel", "iMac", "iMovie", "iOS", "IP", "iPad", "iPhone", "iPhoto", "iPod", "ISP", "iTunes", "iWeb", "iWork", "JavaScript", "jQuery", "Lenovo", "MacBook", "MacPorts", "MHz", "MobileMe", "MySQL", "Nvidia", "Oracle", "OS X", "PayPal", "PowerBook", "PowerPoint", "QuickTime", "RAM", "SSD", "Stack Overflow", "TextEdit", "TextMate", "ThinkPad", "Ubuntu", "USB", "Vista", "VPN", "VMware", "WebKit", "Wi-Fi", "WordPress", "Xcode", "XMLHttpRequest", "Xserve"
 			];
 
-      // Replace trademarks
-      for (var trademark in trademarks)
-        body = body.replace(new RegExp('\\b' + trademarks[trademark].replace(" ","\s*").replace("-","\s*") + '\\b', 'gi'), trademarks[trademark]);
+			// Replace trademarks
+			for (var trademark in trademarks)
+				body = body.replace(new RegExp('\\b' + trademarks[trademark].replace( " ", "\s*" ) + '\\b', 'gi'), trademarks[trademark]);
 
 			var endings = {
 				'essisary':'ecessary',
@@ -225,7 +220,7 @@ EmbedFunctionOnPage('CorrectBody', function(original_body) {
 		ApplyFixedWidth : function(body) {
 			body = body
 			// Hostnames as fixed-width.
-			.replace(/[\s^](\w{2,}(\.\w{2,}){2,})\b(?!\/)/gi, function(match,url) { return '`' + url + '`'; })
+			.replace(/\w{2,}(\.\w{2,})+/gi, function(match) { return '`' + match + '`'; })
 			;return body;
 		},
 
