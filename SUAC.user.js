@@ -72,7 +72,7 @@ EmbedFunctionOnPage('CorrectBody', function(original_body) {
 				'thier':'their',
 				'cud':'could',
 				'pl[sz]':'please',
-				'(can|doesn|don|won|hasn|isn|didn)t':'$1\'t',
+				'(can|doesn|don|won|hasn|haven|isn|didn)t':'$1\'t',
 				'ty':'Thank you',
 				'n1':'Nice one',
 				'any1':'anyone',
