@@ -1,4 +1,4 @@
-// ==UserScript==
+﻿// ==UserScript==
 // @name			Super User Automatic Corrector
 // @author			Tom Wijsman
 // @version			1.0
@@ -113,7 +113,7 @@ EmbedFunctionOnPage('CorrectBody', function(original_body) {
 
 			// Replace trademarks
 			for (var trademark in trademarks)
-				body = body.replace(new RegExp('\\b' + trademarks[trademark].replace( " ", "\s*" ) + '\\b', 'gi'), trademarks[trademark]);
+				body = body.replace(new RegExp('\\b' + trademarks[trademark].replace(" ","\s*").replace("-","\s*") + '\\b', 'gi'), trademarks[trademark]);
 
 			var endings = {
 				'essisary':'ecessary',
@@ -204,8 +204,8 @@ EmbedFunctionOnPage('CorrectBody', function(original_body) {
 
 		CorrectLists : function(body) {
 			body = body
-			.replace(/^( *[0-9]+\))/gi, function(match) { return match.replace(')', '.'); })
-			.replace(/^\w\)/img, function(match) { return "  " + ( match.substr(0,1).toUpperCase().charCodeAt(0) - 64 ) + "."; })
+			.replace(/^( *[0-9]+\))/gim, function(match) { return match.replace(')', '.'); })
+			.replace(/^[A-Za-z]\)/img, function(match) { return "  " + ( match.substr(0,1).toUpperCase().charCodeAt(0) - 64 ) + "."; })
 			.replace(/^ *-(\w)/gim, function(match,letter) { return "- " + letter; })
 			.replace(/:[\r\n ]*[\r\n][\r\n ]*-/g, function(match) { return ":\n\n-"; })
 			;return body;
@@ -238,7 +238,7 @@ EmbedFunctionOnPage('CorrectBody', function(original_body) {
 		ApplyFixedWidth : function(body) {
 			body = body
 			// Hostnames as fixed-width.
-			.replace(/\w{2,}(\.\w{2,})+/gi, function(match) { return '`' + match + '`'; })
+			.replace(/[\s^](\w{2,}(\.\w{2,}){2,})\b(?!\/)/gi, function(match,url) { return '`' + url + '`'; })
 			;return body;
 		},
 
@@ -250,11 +250,27 @@ EmbedFunctionOnPage('CorrectBody', function(original_body) {
 			;return body;
 		},
 	};
+	
+	codeBlocks = original_body.match(/(^[ ]{4}(.|([\r\n][ ]{4}))*)|`[^`]*`|<pre>[^<]*<\/pre>/gim);
+	textOnly = original_body;
+	if( null != codeBlocks ) {
+		for( var i = 0; i < codeBlocks.length; ++i ) {
+			textOnly = textOnly.replace( codeBlocks[ i ], "###µ" + i + "³###" );
+		}
+	}
 
 	for (var correction in corrections)
-		original_body = corrections[correction](original_body);
+		textOnly = corrections[correction](textOnly);
+		
+	// Place code blocks back in
+	correctedBody = textOnly;
+	if( null != codeBlocks ) {
+		for( var i = 0; i < codeBlocks.length; ++i ) {
+			correctedBody = correctedBody.replace( "###µ" + i + "³###", codeBlocks[ i ] );
+		}
+	}
 
-	return original_body;
+	return correctedBody;
 });
 
 EmbedFunctionOnPage('diffString', function(o, n) {
