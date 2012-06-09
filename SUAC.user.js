@@ -113,7 +113,7 @@ EmbedFunctionOnPage('CorrectBody', function(original_body) {
 
 			// Replace trademarks
 			for (var trademark in trademarks)
-				body = body.replace(new RegExp('\\b' + trademarks[trademark].replace( " ", "\s*" ) + '\\b', 'gi'), trademarks[trademark]);
+				body = body.replace(new RegExp('\\b' + trademarks[trademark].replace(" ","\s*").replace("-","\s*") + '\\b', 'gi'), trademarks[trademark]);
 
 			var endings = {
 				'essisary':'ecessary',
@@ -220,7 +220,7 @@ EmbedFunctionOnPage('CorrectBody', function(original_body) {
 		ApplyFixedWidth : function(body) {
 			body = body
 			// Hostnames as fixed-width.
-			.replace(/\w{2,}(\.\w{2,})+/gi, function(match) { return '`' + match + '`'; })
+			.replace(/[\s^](\w{2,}(\.\w{2,}){2,})\b(?!\/)/gi, function(match,url) { return '`' + url + '`'; })
 			;return body;
 		},
 
