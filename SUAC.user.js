@@ -73,6 +73,9 @@ EmbedFunctionOnPage('CorrectBody', function(original_body) {
 				'cud':'could',
 				'pl[sz]':'please',
 				'(can|doesn|don|won|hasn|isn|didn)t':'$1\'t',
+				'ty':'Thank you',
+				'n1':'Nice one',
+				'any1':'anyone',
 				'(?:ubunto|ubunut|ubunutu|ubunu|ubntu|ubutnu|uuntu|unbuntu|ubunt|ubutu)':'Ubuntu',
 				'windows phone':'Windows Phone',
 				'zune':'Zune',
@@ -104,11 +107,11 @@ EmbedFunctionOnPage('CorrectBody', function(original_body) {
 	
 	    // These names will be properly capitalized and excessive (or missing) whitespace inside these terms will be replaced
   		var trademarks = [
-				"AMD", "Android", "AppleScript", "ASUS", "ATI", "Bluetooth", "DivX", "DVD", "Eclipse", "Eee PC", "FireWire",
-				"GarageBand", "GHz", "Gmail", "Google", "iBookstore", "iCal", "iChat", "iLife", "iMac", "iMovie", "iOS", "IP", "iPad",
+				"AMD", "Android", "AppleScript", "ASUS", "ATI", "Bluetooth", "CPU", "DivX", "DVD", "Eclipse", "Eee PC", "FireWire",
+				"GarageBand", "GHz", "Gmail", "Google", "iBookstore", "iCal", "iChat", "iLife", "Intel", "iMac", "iMovie", "iOS", "IP", "iPad",
 				"iPhone", "iPhoto", "iPod", "ISP", "iTunes", "iWeb", "iWork", "JavaScript", "jQuery", "Lenovo", 
 				"MacBook", "MacPorts", "MHz", "MobileMe", "MySQL", "Nvidia", "Oracle", "OS X", "PayPal", "PowerBook", "PowerPoint",
-				"QuickTime", "SSD", "Stack Overflow", "TextEdit", "TextMate", "ThinkPad", "Ubuntu", "USB", "Vista", "VPN", "VMware", "WebKit", "Wi-Fi",
+				"QuickTime", "RAM", "SSD", "Stack Overflow", "TextEdit", "TextMate", "ThinkPad", "Ubuntu", "USB", "Vista", "VPN", "VMware", "WebKit", "Wi-Fi",
 				"WordPress", "Xcode", "XMLHttpRequest", "Xserve"
 			];
 
@@ -191,7 +194,7 @@ EmbedFunctionOnPage('CorrectBody', function(original_body) {
 		},
 
 		RemoveThankYou : function(body) {
-			return body.replace(/(?:, |many )?(?:thank|k?thn?x(?:bye)?)(?:s|(?: |-)you)?(?: (?:so|very) much)?(?:\s?(?:,|-)(?:[\w\s]+)| :-?\)| a lot| and regards| for(?: any| the)? (?:help|ideas)| in advance)?[.|!]?/i, '');
+			return body.replace(/(?:, |many )?(?:thank|k?thn?x(?:bye)?)(?:s|(?: |-)you)?(?: (?:so|very) much)?(?:\s?(?:,|-)(?:[\w\s]+)| :-?\)| a lot| and regards| for(?: any| the| your)? (?:help|ideas)| in advance)?[.|!]?/i, '');
 		},
 
 		CorrectLists : function(body) {
