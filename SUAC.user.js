@@ -113,14 +113,14 @@ EmbedFunctionOnPage('CorrectBody', function(original_body) {
 				"AMD", "Android", "AppleScript", "ASUS", "ATI", "Bluetooth", "CPU", "DivX", "DVD", "Eclipse", "Eee PC", "FireWire",
 				"GarageBand", "GHz", "Gmail", "Google", "iBookstore", "iCal", "iChat", "iLife", "Intel", "iMac", "iMovie", "iOS", "IP", "iPad",
 				"iPhone", "iPhoto", "iPod", "ISP", "iTunes", "iWeb", "iWork", "JavaScript", "jQuery", "Lenovo", 
-				"MacBook", "MacPorts", "MHz", "MobileMe", "MySQL", "Nvidia", "Oracle", "OS X", "PayPal", "PowerBook", "PowerPoint",
+				"MacBook", "MacPorts", "MHz", "MobileMe", "MySQL", "NVIDIA", "Oracle", "OS X", "PayPal", "PowerBook", "PowerPoint",
 				"QuickTime", "RAM", "SSD", "Stack Overflow", "TextEdit", "TextMate", "ThinkPad", "Ubuntu", "USB", "Vista", "VPN", "VMware", "WebKit", "Wi-Fi",
 				"WordPress", "Xcode", "XMLHttpRequest", "Xserve"
 			];
 
       // Replace trademarks
       for (var trademark in trademarks)
-        body = body.replace(new RegExp('\\b' + trademarks[trademark].replace( " ", "\s*" ) + '\\b', 'gi'), trademarks[trademark]);
+        body = body.replace(new RegExp('\\b' + trademarks[trademark].replace(" ","\s*").replace("-","\s*") + '\\b', 'gi'), trademarks[trademark]);
 
 			var endings = {
 				'essisary':'ecessary',
@@ -226,7 +226,7 @@ EmbedFunctionOnPage('CorrectBody', function(original_body) {
 		
 		Testing : function(body) {
 			body = body
-			.replace(/\w{2,}(\.\w{2,})+/gi, function(match) { return '`' + match + '`'; }) /* Hostnames as fixed-width */
+			.replace(/[\s^](\w{2,}(\.\w{2,}){2,})\b(?!\/)/gi, function(match,url) { return '`' + url + '`'; }) /* Hostnames as fixed-width */
 			;return body;
 		},
 
