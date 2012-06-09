@@ -114,7 +114,7 @@ EmbedFunctionOnPage('CorrectBody', function(original_body) {
 
       // Replace trademarks
       for (var trademark in trademarks)
-        body = body.replace(new RegExp('\\b' + trademarks[trademark].replace( " ", "\w*" ) + '\\b', 'gi'), trademarks[trademark]);
+        body = body.replace(new RegExp('\\b' + trademarks[trademark].replace( " ", "\s*" ) + '\\b', 'gi'), trademarks[trademark]);
 
 			var endings = {
 				'essisary':'ecessary',
