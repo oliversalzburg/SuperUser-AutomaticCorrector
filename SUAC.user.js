@@ -150,7 +150,7 @@ EmbedFunctionOnPage('CorrectBody', function(original_body) {
 
 		CorrectMarks : function(body) {
 			body = body
-			.replace(/\.\.\.+/gi, '$$$�$$$')
+			.replace(/\.\.\.+/gi, '$$$²$$$')
 			.replace(/\.+/gi, '.')
 			.replace(/[.]([ ]+[.]+)+/gi, '.')
 			.replace(/\.\?/gi, '?')
@@ -246,27 +246,48 @@ EmbedFunctionOnPage('CorrectBody', function(original_body) {
 			body = body
 
 			// CorrectMarks
-			.replace('$$$�$$$', '...')
+			.replace('$$$²$$$', '...')
 			;return body;
 		},
 	};
 	
+	var CODE_BLOCK_MARKER = "###µ²";
+	var URL_MARKER = "###µ³";
+	
+	// Find pre-formatted blocks of text and replace them by markers
 	codeBlocks = original_body.match(/(^[ ]{4}(.|([\r\n][ ]{4}))*)|`[^`]*`|<pre>[^<]*<\/pre>/gim);
 	textOnly = original_body;
 	if( null != codeBlocks ) {
 		for( var i = 0; i < codeBlocks.length; ++i ) {
-			textOnly = textOnly.replace( codeBlocks[ i ], "###µ" + i + "³###" );
+			textOnly = textOnly.replace( codeBlocks[ i ], CODE_BLOCK_MARKER + i );
+		}
+	}
+	
+	// Find URLs and replace them by markers
+	urls = textOnly.match(/[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi);
+	if( null != urls ) {
+		for( var i = 0; i < urls.length; ++i ) {
+			textOnly = textOnly.replace( urls[ i ], URL_MARKER + i );
 		}
 	}
 
+	// Run cleanup process
 	for (var correction in corrections)
 		textOnly = corrections[correction](textOnly);
+	
+	correctedBody = textOnly;
+		
+	// Place URLs blocks back in
+	if( null != urls ) {
+		for( var i = 0; i < urls.length; ++i ) {
+			correctedBody = correctedBody.replace( URL_MARKER + i, urls[ i ] );
+		}
+	}
 		
 	// Place code blocks back in
-	correctedBody = textOnly;
 	if( null != codeBlocks ) {
 		for( var i = 0; i < codeBlocks.length; ++i ) {
-			correctedBody = correctedBody.replace( "###µ" + i + "³###", codeBlocks[ i ] );
+			correctedBody = correctedBody.replace( CODE_BLOCK_MARKER + i, codeBlocks[ i ] );
 		}
 	}
 
