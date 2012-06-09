@@ -1,4 +1,4 @@
-// ==UserScript==
+﻿// ==UserScript==
 // @name			Super User Automatic Corrector
 // @author			Tom Wijsman
 // @version			1.0
@@ -195,8 +195,8 @@ EmbedFunctionOnPage('CorrectBody', function(original_body) {
 
 		CorrectLists : function(body) {
 			body = body
-			.replace(/^( *[0-9]+\))/gi, function(match) { return match.replace(')', '.'); })
-			.replace(/^\w\)/img, function(match) { return "  " + ( match.substr(0,1).toUpperCase().charCodeAt(0) - 64 ) + "."; })
+			.replace(/^( *[0-9]+\))/gim, function(match) { return match.replace(')', '.'); })
+			.replace(/^[A-Za-z]\)/img, function(match) { return "  " + ( match.substr(0,1).toUpperCase().charCodeAt(0) - 64 ) + "."; })
 			.replace(/^ *-(\w)/gim, function(match,letter) { return "- " + letter; })
 			.replace(/:[\r\n ]*[\r\n][\r\n ]*-/g, function(match) { return ":\n\n-"; })
 			;return body;
