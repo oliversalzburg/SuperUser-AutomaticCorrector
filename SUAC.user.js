@@ -148,7 +148,7 @@ EmbedFunctionOnPage('CorrectBody', function(original_body) {
 
 		CorrectFileSizes : function(body) {
 			body = body
-			.replace(/([0-9])(MB|GB)\b/gi, '$1 $2')
+			.replace(/([0-9]) ?(K|M|G|T)(i)?B\b/gi, function(match,$1,$2,$3) { return $1 + ' ' + $2.toUpperCase() + (($3)?$3:'') + 'B'; } )
 			;return body;
 		},
 
