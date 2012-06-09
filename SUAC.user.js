@@ -247,11 +247,27 @@ EmbedFunctionOnPage('CorrectBody', function(original_body) {
 			;return body;
 		},
 	};
+	
+	codeBlocks = original_body.match(/(^[ ]{4}(.|([\r\n][ ]{4}))*)|`[^`]*`|<pre>[^<]*<\/pre>/gim);
+	textOnly = original_body;
+	if( null != codeBlocks ) {
+		for( var i = 0; i < codeBlocks.length; ++i ) {
+			textOnly = textOnly.replace( codeBlocks[ i ], "###µ" + i + "³###" );
+		}
+	}
 
 	for (var correction in corrections)
-		original_body = corrections[correction](original_body);
+		textOnly = corrections[correction](textOnly);
+		
+	// Place code blocks back in
+	correctedBody = textOnly;
+	if( null != codeBlocks ) {
+		for( var i = 0; i < codeBlocks.length; ++i ) {
+			correctedBody = correctedBody.replace( "###µ" + i + "³###", codeBlocks[ i ] );
+		}
+	}
 
-	return original_body;
+	return correctedBody;
 });
 
 EmbedFunctionOnPage('diffString', function(o, n) {
