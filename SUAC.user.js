@@ -83,9 +83,9 @@ EmbedFunctionOnPage('CorrectBody', function(original_body) {
 				"AMD", "AppleScript", "ASUS", "ATI", "Bluetooth", "DivX", "DVD", "Eee PC", "FireWire",
 				"GarageBand", "GHz", "iBookstore", "iCal", "iChat", "iLife", "iMac", "iMovie", "iOS", "iPad",
 				"iPhone", "iPhoto", "iPod", "iTunes", "iWeb", "iWork", "JavaScript", "jQuery", "Lenovo", 
-				"MacBook", "MacPorts", "MHz", "Microsoft", "MobileMe", "MySQL", "Nvidia", "OS X", "PowerBook", "PowerPoint",
-				"QuickTime", "SSD", "TextEdit", "TextMate", "ThinkPad", "USB", "Vista", "VMware", "WebKit", "Wi-Fi",
-				"Windows XP", "Windows 7", "WordPress", "Xcode", "XMLHttpRequest", "Xserve"
+				"MacBook", "MacPorts", "MHz", "MobileMe", "MySQL", "Nvidia", "OS X", "PowerBook", "PowerPoint",
+				"QuickTime", "SSD", "TextEdit", "TextMate", "ThinkPad", "USB", "VMware", "WebKit", "Wi-Fi",
+				"WordPress", "Xcode", "XMLHttpRequest", "Xserve"
 			];
 
 			body = body.replace(/\bwindow[s$]/gi, 'Windows');
