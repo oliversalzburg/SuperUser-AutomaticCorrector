@@ -228,7 +228,8 @@ EmbedFunctionOnPage('CorrectBody', function(original_body) {
 			body = body
 
 			// CorrectFirstLetters
-			.replace(/,[ ]+I\.e./gi, ', i.e.')
+			.replace(/(\s|^)+I\.[ ]e\.[ ](\S)([' ]*)/gim, function(match, pre, postFirstChar, postSecondChar) { return pre + 'i.e. ' + ((postFirstChar.toLowerCase()=='i' && postSecondChar) ? postFirstChar.toUpperCase() : postFirstChar.toLowerCase()) + postSecondChar; })
+			.replace(/(\s|^)+E\.[ ]g\.[ ](\S)([' ]*)/gim, function(match, pre, postFirstChar, postSecondChar) { return pre + 'e.g. ' + ((postFirstChar.toLowerCase()=='i' && postSecondChar) ? postFirstChar.toUpperCase() : postFirstChar.toLowerCase()) + postSecondChar; })
 
 			// ProperSpacesAroundPunctuationMarks
 			.replace(/Http:\/\//gi, 'http://')
