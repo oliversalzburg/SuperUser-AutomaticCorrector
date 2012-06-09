@@ -78,7 +78,8 @@ EmbedFunctionOnPage('CorrectBody', function(original_body) {
 				'micro[s$]oft':'Microsoft',
 				'win(dow[s$])?(XP|vista|7)':'Windows $2',
 				'co[sz]':'because',
-				'w[au]t':'what'
+				'w[au]t':'what',
+				'alot':'a lot'
 			};
 			
 			var trademarks = [
