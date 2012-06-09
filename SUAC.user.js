@@ -183,6 +183,12 @@ EmbedFunctionOnPage('CorrectBody', function(original_body) {
 			//.replace(/ and (?=[^,.!?\n]*? and )/gi, function(match) { return ','; }) /* Replace repetitive use of 'and' with comma. */
 			;return body;
 		},
+		
+		Testing : function(body) {
+			body = body
+			.replace(/\w{2,}(\.\w{2,})+/gi, function(match) { return '`' + match + '`'; }) /* Hostnames as fixed-width */
+			;return body;
+		},
 
 		CorrectScriptMistakes : function(body) {
 			body = body
