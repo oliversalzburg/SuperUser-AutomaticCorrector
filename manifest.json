@@ -2,7 +2,7 @@
    "content_scripts": [ {
       "exclude_globs": [  ],
       "exclude_matches": [  ],
-      "include_globs": [ "http://superuser.com/*", "http://www.superuser.com/*" ],
+      "include_globs": [ "http://superuser.com/*", "http://www.superuser.com/*", "http://askubuntu.com/*", "http://www.askubuntu.com/*" ],
       "js": [ "SUAC.user.js" ],
       "matches": [ "http://*/*", "https://*/*" ],
       "run_at": "document_idle"

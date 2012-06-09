@@ -5,6 +5,8 @@
 // @description   Using Jakub Hampl & Nathan Osman's framework to create a Super User specific Automatic Corrector.
 // @include       http://superuser.com/*
 // @include       http://www.superuser.com/*
+// @include       http://askubuntu.com/*
+// @include       http://www.askubuntu.com/*
 // ==/UserScript==
 
 function EmbedCodeOnPage(javascript_code) {
@@ -82,9 +84,9 @@ EmbedFunctionOnPage('CorrectBody', function(original_body) {
 			var trademarks = [
 				"AMD", "AppleScript", "ASUS", "ATI", "Bluetooth", "DivX", "DVD", "Eee PC", "FireWire",
 				"GarageBand", "GHz", "iBookstore", "iCal", "iChat", "iLife", "iMac", "iMovie", "iOS", "iPad",
-				"iPhone", "iPhoto", "iPod", "iTunes", "iWeb", "iWork", "JavaScript", "jQuery", "Lenovo", 
+				"iPhone", "iPhoto", "iPod", "ISP", "iTunes", "iWeb", "iWork", "JavaScript", "jQuery", "Lenovo", 
 				"MacBook", "MacPorts", "MHz", "MobileMe", "MySQL", "Nvidia", "OS X", "PowerBook", "PowerPoint",
-				"QuickTime", "SSD", "TextEdit", "TextMate", "ThinkPad", "USB", "VMware", "WebKit", "Wi-Fi",
+				"QuickTime", "SSD", "TextEdit", "TextMate", "ThinkPad", "Ubuntu", "USB", "VPN", "VMware", "WebKit", "Wi-Fi",
 				"WordPress", "Xcode", "XMLHttpRequest", "Xserve"
 			];
 
