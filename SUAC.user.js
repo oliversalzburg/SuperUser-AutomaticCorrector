@@ -250,8 +250,10 @@ EmbedFunctionOnPage('CorrectBody', function(original_body) {
 	
 	codeBlocks = original_body.match(/(^[ ]{4}(.|([\r\n][ ]{4}))*)|`[^`]*`|<pre>[^<]*<\/pre>/gim);
 	textOnly = original_body;
-	for( var i = 0; i < codeBlocks.length; ++i ) {
-		textOnly = textOnly.replace( codeBlocks[ i ], "###µ" + i + "³###" );
+	if( null != codeBlocks ) {
+		for( var i = 0; i < codeBlocks.length; ++i ) {
+			textOnly = textOnly.replace( codeBlocks[ i ], "###µ" + i + "³###" );
+		}
 	}
 
 	for (var correction in corrections)
@@ -259,8 +261,10 @@ EmbedFunctionOnPage('CorrectBody', function(original_body) {
 		
 	// Place code blocks back in
 	correctedBody = textOnly;
-	for( var i = 0; i < codeBlocks.length; ++i ) {
-		correctedBody = correctedBody.replace( "###µ" + i + "³###", codeBlocks[ i ] );
+	if( null != codeBlocks ) {
+		for( var i = 0; i < codeBlocks.length; ++i ) {
+			correctedBody = correctedBody.replace( "###µ" + i + "³###", codeBlocks[ i ] );
+		}
 	}
 
 	return correctedBody;
