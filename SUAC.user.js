@@ -78,11 +78,24 @@ EmbedFunctionOnPage('CorrectBody', function(original_body) {
 				'co[sz]':'because',
 				'w[au]t':'what'
 			};
+			
+			var trademarks = [
+				"AMD", "AppleScript", "ASUS", "ATI", "Bluetooth", "DivX", "DVD", "Eee PC", "FireWire",
+				"GarageBand", "GHz", "iBookstore", "iCal", "iChat", "iLife", "iMac", "iMovie", "iOS", "iPad",
+				"iPhone", "iPhoto", "iPod", "iTunes", "iWeb", "iWork", "JavaScript", "jQuery", "Lenovo", 
+				"MacBook", "MacPorts", "MHz", "Microsoft", "MobileMe", "MySQL", "Nvidia", "OS X", "PowerBook", "PowerPoint",
+				"QuickTime", "SSD", "TextEdit", "TextMate", "ThinkPad", "USB", "Vista", "VMware", "WebKit", "Wi-Fi",
+				"Windows XP", "Windows 7", "WordPress", "Xcode", "XMLHttpRequest", "Xserve"
+			];
 
 			body = body.replace(/\bwindow[s$]/gi, 'Windows');
 
 			for (var wrong_word in replacements)
 				body = body.replace(new RegExp('\\b' + wrong_word + '\\b', 'gi'), replacements[wrong_word]);
+
+      // Replace trademarks
+      for (var trademark in trademarks)
+        body = body.replace(new RegExp('\\b' + trademarks[trademark] + '\\b', 'gi'), trademarks[trademark]);
 
 			var endings = {
 				'essisary':'ecessary',
