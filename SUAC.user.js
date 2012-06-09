@@ -74,7 +74,9 @@ EmbedFunctionOnPage('CorrectBody', function(original_body) {
 				'isnt':'isn\'t',
 				'ip':'IP',
 				'micro[s$]oft':'Microsoft',
-				'win(dow[s$])?(XP|vista|7)':'Windows $2'
+				'win(dow[s$])?(XP|vista|7)':'Windows $2',
+				'co[sz]':'because',
+				'w[au]t':'what'
 			};
 
 			body = body.replace(/\bwindow[s$]/gi, 'Windows');
