@@ -55,31 +55,30 @@ EmbedFunctionOnPage('CorrectTitle', function(title) {
 EmbedFunctionOnPage('CorrectBody', function(original_body) {
 	var corrections = {
 		CorrectCommonMisspellings : function(body) {
-		  // This first batch of replacements only applies to tokens inside of word boundaries!
+			// This first batch of replacements only applies to tokens inside of word boundaries!
 			var replacements = {
 				'u':'you',
 				'ur':'your',
 				'i( |\')?':'I$1',
-				'i ?m':'I\'m',
+				'i m':'I\'m',
 				'teh':'the',
 				'c(o|u)(s|z)e?':'because',
 				'b4':'before',
 				'w[au]t':'what',
 				'alot':'a lot',
-				'dont':'don\'t',
 				'I (got)':'I have',
 				'whos':'who\'s',
 				'thier':'their',
 				'cud':'could',
 				'pl[sz]':'please',
 				'(can|doesn|don|won|hasn|haven|isn|didn)t':'$1\'t',
+				'ubunto|ubunut|ubunutu|ubunu|ubntu|ubutnu|uuntu|unbuntu|ubunt|ubutu':'Ubuntu',
 				'ty':'Thank you',
 				'n1':'Nice one',
 				'any1':'anyone',
 				'shuting':'shutting',
 				'puting':'putting',
 				'instaled':'installed',
-				'(?:ubunto|ubunut|ubunutu|ubunu|ubntu|ubutnu|uuntu|unbuntu|ubunt|ubutu)':'Ubuntu',
 				'windows phone':'Windows Phone',
 				'zune':'Zune',
 				'whoo?ping':'',
@@ -90,21 +89,20 @@ EmbedFunctionOnPage('CorrectBody', function(original_body) {
 				'unrestrictive':'nonrestrictive',
 				'm((icro[s$]oft)|s)':'Microsoft',
 				'win(dow[s$])?(XP|vista|7)':'Windows $2',
-				'pl[ |/|-]?sql':'PL/SQL',
-				't[ |/|-]?sql':'T-SQL'
+				'pl[ /-]?sql':'PL/SQL',
+				't[ /-]?sql':'T-SQL'
 			};
-			
-			body = body.replace(/\bwindow[s$]/gi, 'Windows');
 
 			for (var wrong_word in replacements)
 				body = body.replace(new RegExp('\\b' + wrong_word + '\\b', 'gi'), replacements[wrong_word]);
-		
-		  // This second batch of replacements can apply anywhere in the text
-		  var variableReplacements = {
+
+			// This second batch of replacements can apply anywhere in the text
+			var variableReplacements = {
+				'\\bwindow[s$]':'Windows',
 				'\\b(a)n(?= +(?![aeiou]|HTML|user))':'$1',
 				'\\b(a)(?= +[aeiou](?!ser))':'$1n'
 			};
-			
+
 			for (var wrong_word in variableReplacements)
 				body = body.replace(new RegExp(wrong_word, 'gi'), variableReplacements[wrong_word]);
 	
@@ -202,8 +200,7 @@ EmbedFunctionOnPage('CorrectBody', function(original_body) {
 
 		CorrectLists : function(body) {
 			body = body
-			.replace(/([0-9]+\))/gi, function(match) { return match.replace(')', '.'); })
-			.replace(/\(([0-9]+)\./gi, function(match) { return match.replace('.', ')'); })
+			.replace(/^( *[0-9]+\))/gi, function(match) { return match.replace(')', '.'); })
 			.replace(/^\w\)/img, function(match) { return "  " + ( match.substr(0,1).toUpperCase().charCodeAt(0) - 64 ) + "."; })
 			.replace(/^ *-(\w)/gim, function(match,letter) { return "- " + letter; })
 			.replace(/:[\r\n ]*[\r\n][\r\n ]*-/g, function(match) { return ":\n\n-"; })
@@ -213,20 +210,22 @@ EmbedFunctionOnPage('CorrectBody', function(original_body) {
 		CorrectFirstLetters : function(body) {
 			body = body
 			.replace(/\b([A-Za-z]+)(\.|\?|\!)[ ]+([a-z])/gi, function(_, word, one, two) { return word + one + ' ' + two.toUpperCase(); })
-			.replace(/(^|(?:\. ))([a-z])/gm, function(match,prefix,letter) { return prefix + letter.toUpperCase(); }) /* Capitalize the first letter of each new sentence. */
+			// Capitalize the first letter of each new sentence.
+			.replace(/(^|(?:\. ))([a-z])/gm, function(match,prefix,letter) { return prefix + letter.toUpperCase(); })
 			;return body;
 		},
 
 		FixEnumerations : function(body) {
 			body = body
 			// XXX Breaks for things like "A and B did X, then A and B did Y, then A and B did Z." and "A, B did X, then A, B did Y, then A and B did Z."
-			//.replace(/ and (?=[^,.!?\n]*? and )/gi, function(match) { return ','; }) /* Replace repetitive use of 'and' with comma. */
+			//.replace(/ and (?=[^,.!?\n]*? and )/gi, function(match) { return ','; })
 			;return body;
 		},
-		
-		Testing : function(body) {
+
+		ApplyFixedWidth : function(body) {
 			body = body
-			.replace(/[\s^](\w{2,}(\.\w{2,}){2,})\b(?!\/)/gi, function(match,url) { return '`' + url + '`'; }) /* Hostnames as fixed-width */
+			// Hostnames as fixed-width.
+			.replace(/[\s^](\w{2,}(\.\w{2,}){2,})\b(?!\/)/gi, function(match,url) { return '`' + url + '`'; })
 			;return body;
 		},
 
@@ -249,7 +248,6 @@ EmbedFunctionOnPage('CorrectBody', function(original_body) {
 
 			// CorrectMarks
 			.replace(/SUPERSPECIALDOTFIX/gi, '...')
-
 			;return body;
 		},
 	};
