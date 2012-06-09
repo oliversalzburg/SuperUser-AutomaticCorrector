@@ -150,7 +150,7 @@ EmbedFunctionOnPage('CorrectBody', function(original_body) {
 
 		CorrectMarks : function(body) {
 			body = body
-			.replace(/\.\.\.+/gi, 'SUPERSPECIALDOTFIX')
+			.replace(/\.\.\.+/gi, '$$$²$$$')
 			.replace(/\.+/gi, '.')
 			.replace(/[.]([ ]+[.]+)+/gi, '.')
 			.replace(/\.\?/gi, '?')
@@ -174,7 +174,7 @@ EmbedFunctionOnPage('CorrectBody', function(original_body) {
 			.replace(/www\.[ ]/gi, 'www.')
 			.replace(/:[ ]\/\//gi, '://')
 			.replace(/![ ]\[/gi, '![')
-			// Fix erroneous spaces inserted by function in front of `)`, `*` and end of line. 
+			// Fix erroneous spaces inserted by function in front of `)`, `*` and end of line.
 			.replace(/([.:!?,])[ ](\*|\)|$)/gim, '$1$2')
 			// XXX Breaks: "Oh. So, that was cool." into "Oh.so, that was cool." which is unacceptable. We will want to remove any words from here that could be used after a "." and then uncomment it.
 			//.replace(/\.[ ]+(ac|ad|ae|aero|af|ag|ai|al|am|an|ao|aq|as|asia|at|aw|ax|az|ba|bb|be|bf|bg|bh|bi|biz|bj|bm|bo|br|bs|bt|bw|by|bz|ca|cat|cc|cd|cf|cg|ch|ci|cl|cm|cn|co|com|coop|cr|cu|cv|cx|cz|de|dj|dk|dm|do|dz|ec|edu|ee|eg|es|eu|fi|fm|fo|fr|ga|gd|ge|gf|gg|gh|gi|gl|gm|gov|gp|gq|gr|gs|gw|gy|hk|hm|hn|hr|ht|hu|id|ie|im|in|info|int|io|iq|ir|is|it|je|jo|jobs|jp|kg|ki|km|kn|kr|ky|kz|la|lc|li|lk|ls|lt|lu|lv|ly|ma|mc|md|me|mg|mh|mil|mk|ml|mn|mo|mobi|mp|mq|mr|ms|mu|museum|mv|mw|mx|my|na|name|nc|ne|net|nf|nl|no|nr|nu|org|pa|pe|pf|ph|pk|pl|pm|pn|pr|pro|ps|pt|pw|qa|re|ro|rs|ru|rw|sa|sb|sc|sd|se|sg|sh|si|sk|sl|sm|sn|so|sr|st|su|sy|sz|tc|td|tel|tf|tg|th|tj|tk|tl|tm|tn|to|travel|tt|tv|tw|ua|ug|us|uz|va|vc|vg|vi|vn|vu|wf|ws|yt|xxx)\b/gi, function(match) { return '.' + match.toLowerCase(); })
@@ -246,7 +246,7 @@ EmbedFunctionOnPage('CorrectBody', function(original_body) {
 			body = body
 
 			// CorrectMarks
-			.replace(/SUPERSPECIALDOTFIX/gi, '...')
+			.replace('$$$²$$$', '...')
 			;return body;
 		},
 	};
