@@ -71,8 +71,14 @@ EmbedFunctionOnPage('CorrectBody', function(original_body) {
 				'thier':'their',
 				'cud':'could',
 				'pl[sz]':'please',
-				'(can|doesn|don|won|hasn|isn|didn|haven)t':'$1\'t',
+				'(can|doesn|don|won|hasn|haven|isn|didn)t':'$1\'t',
 				'ubunto|ubunut|ubunutu|ubunu|ubntu|ubutnu|uuntu|unbuntu|ubunt|ubutu':'Ubuntu',
+				'ty':'Thank you',
+				'n1':'Nice one',
+				'any1':'anyone',
+				'shuting':'shutting',
+				'puting':'putting',
+				'instaled':'installed',
 				'windows phone':'Windows Phone',
 				'zune':'Zune',
 				'whoo?ping':'',
@@ -102,7 +108,7 @@ EmbedFunctionOnPage('CorrectBody', function(original_body) {
 
 			// These names will be properly capitalized and excessive (or missing) whitespace inside these terms will be replaced
 			var trademarks = [
-				"AMD", "Android", "AppleScript", "ASUS", "ATI", "Bluetooth", "DivX", "DVD", "Eclipse", "Eee PC", "FireWire", "GarageBand", "GHz", "Gmail", "Google", "iBookstore", "iCal", "iChat", "iLife", "iMac", "iMovie", "iOS", "IP", "iPad", "iPhone", "iPhoto", "iPod", "ISP", "iTunes", "iWeb", "iWork", "JavaScript", "jQuery", "Lenovo", "MacBook", "MacPorts", "MHz", "MobileMe", "MySQL", "Nvidia", "Oracle", "OS X", "PayPal", "PowerBook", "PowerPoint", "QuickTime", "SSD", "Stack Overflow", "TextEdit", "TextMate", "ThinkPad", "Ubuntu", "USB", "Vista", "VPN", "VMware", "WebKit", "Wi-Fi", "WordPress", "Xcode", "XMLHttpRequest", "Xserve"
+				"AMD", "Android", "AppleScript", "ASUS", "ATI", "Bluetooth", "CPU", "DivX", "DVD", "Eclipse", "Eee PC", "FireWire", "GarageBand", "GHz", "Gmail", "Google", "iBookstore", "iCal", "iChat", "iLife", "Intel", "iMac", "iMovie", "iOS", "IP", "iPad", "iPhone", "iPhoto", "iPod", "ISP", "iTunes", "iWeb", "iWork", "JavaScript", "jQuery", "Lenovo", "MacBook", "MacPorts", "MHz", "MobileMe", "MySQL", "Nvidia", "Oracle", "OS X", "PayPal", "PowerBook", "PowerPoint", "QuickTime", "RAM", "SSD", "Stack Overflow", "TextEdit", "TextMate", "ThinkPad", "Ubuntu", "USB", "Vista", "VPN", "VMware", "WebKit", "Wi-Fi", "WordPress", "Xcode", "XMLHttpRequest", "Xserve"
 			];
 
 			// Replace trademarks
@@ -138,7 +144,7 @@ EmbedFunctionOnPage('CorrectBody', function(original_body) {
 
 		CorrectFileSizes : function(body) {
 			body = body
-			.replace(/([0-9])(MB|GB)\b/gi, '$1 $2')
+			.replace(/([0-9]) ?(K|M|G|T)(i)?(B)\b/gi, function(match,$1,$2,$3,$4) { return $1 + ' ' + $2.toUpperCase() + (($3)?$3:'') + $4; } )
 			;return body;
 		},
 
@@ -184,7 +190,7 @@ EmbedFunctionOnPage('CorrectBody', function(original_body) {
 		},
 
 		RemoveThankYou : function(body) {
-			return body.replace(/(?:, |many )?(?:thank|k?thn?x(?:bye)?)(?:s|(?: |-)you)?(?: (?:so|very) much)?(?:\s?(?:,|-)(?:[\w\s]+)| :-?\)| a lot| and regards| for(?: any| the)? (?:help|ideas)| in advance)?[.|!]?/i, '');
+			return body.replace(/(?:, |many )?(?:thank|k?thn?x(?:bye)?)(?:s|(?: |-)you)?(?: (?:so|very) much)?(?:\s?(?:,|-)(?:[\w\s]+)| :-?\)| a lot| and regards| for(?: any| the| your)? (?:help|ideas)| in advance)?[.|!]?/i, '');
 		},
 
 		CorrectLists : function(body) {
