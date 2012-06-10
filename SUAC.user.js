@@ -184,7 +184,7 @@ EmbedFunctionOnPage('CorrectBody', function(original_body) {
 		ProperSpacesAroundPunctuationMarks : function (body) {
 			body = body
 			// Fix (insert) space after punctuation mark; remove spaces before punctuation mark
-			.replace(/((?:(?:http:\/\/|https:\/\/|ftp:\/\/|www\.)[a-zA-Z0-9\/.%_#~-]*)|(?:http:\/\/|https:\/\/|ftp:\/\/)?(?:[0-9]+[.]?)+)?([ ]*[.:!?,]+[ ]*?(?:(?=[^ ])|([ ]{2,}$)))/gim, function (orig,look,match,softLineBreak) { return look?orig:match.trim().substring(0,1) + (softLineBreak?'  ':' '); })
+			.replace(/((?:(?:https?|ftp):\/\/|www\.)[a-zA-Z0-9\/.%_#~-]+)?([ ]*[.:!?,]+(?!\/)[ ]*?(?:(?=[^ ])|([ ]{2,}$)))/gim, function (orig,look,match,softLineBreak) { return look?orig:match.trim()[0] + (softLineBreak?'  ':' '); })
 			// Handle special cases
 			.replace(/www\.[ ]/gi, 'www.')
 			.replace(/:[ ]\/\//gi, '://')
