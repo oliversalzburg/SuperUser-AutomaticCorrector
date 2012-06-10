@@ -255,6 +255,12 @@ EmbedFunctionOnPage('CorrectBody', function(original_body) {
 			.replace(/(?:[\s^])(\w+(\.\w+){2,})\b(?!\/)/gi, function(match,url) { return match.replace( url, '`' + url + '`' ); })
 			;return body;
 		},
+		
+		AddKeyboardMarkup : function(body) {
+			body = body
+			.replace(/\bf[1-9][0-2]?\b/gi, function(match) { return "<kbd>" + match + "</kbd>"; })
+			;return body;
+		},
 
 		CorrectScriptMistakes : function(body) {
 			body = body
