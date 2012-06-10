@@ -232,9 +232,11 @@ EmbedFunctionOnPage('CorrectBody', function(original_body) {
 			.replace(/Ftp:\/\//gi, 'ftp://')
 			.replace(/Www\./gi, 'www.')
 			// i.e.
-			.replace(/(\s|^|[(])I\.[ ]e\.[ ](\S)([' ]*)/gim, function(match, pre, postFirstChar, postSecondChar) { return pre + 'i.e. ' + ((postFirstChar.toLowerCase()=='i' && postSecondChar) ? postFirstChar.toUpperCase() : postFirstChar.toLowerCase()) + postSecondChar; })
+			.replace(/(\s|^|[(])i\.[ ]e\.[ ](\S)([' ]*)/gim, function(match, pre, postFirstChar, postSecondChar) { return pre + 'i.e. ' + ((postFirstChar.toLowerCase()=='i' && postSecondChar) ? postFirstChar.toUpperCase() : postFirstChar.toLowerCase()) + postSecondChar; })
 			// e.g.
-			.replace(/(\s|^|[(])E\.[ ]g\.[ ](\S)([' ]*)/gim, function(match, pre, postFirstChar, postSecondChar) { return pre + 'e.g. ' + ((postFirstChar.toLowerCase()=='i' && postSecondChar) ? postFirstChar.toUpperCase() : postFirstChar.toLowerCase()) + postSecondChar; })
+			.replace(/(\s|^|[(])e\.[ ]g\.[ ](\S)([' ]*)/gim, function(match, pre, postFirstChar, postSecondChar) { return pre + 'e.g. ' + ((postFirstChar.toLowerCase()=='i' && postSecondChar) ? postFirstChar.toUpperCase() : postFirstChar.toLowerCase()) + postSecondChar; })
+			// P.S.
+			.replace(/(\s|^|[(])p\.[ ]s\.[ ](\S)([' ]*)/gim, function(match, pre, postFirstChar, postSecondChar) { return pre + 'P.S. ' + ((postFirstChar.toLowerCase()=='i' && postSecondChar) ? postFirstChar.toUpperCase() : postFirstChar.toLowerCase()) + postSecondChar; })
 
 			;return body;
 		},
