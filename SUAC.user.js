@@ -88,7 +88,7 @@ EmbedFunctionOnPage('CorrectBody', function(original_body) {
 				'therfore':'therefore',
 				'unrestrictive':'nonrestrictive',
 				'm((icro[s$]oft)|s)':'Microsoft',
-				'win(dow[s$])?(XP|vista|7)':'Windows $2',
+				'win(dow[s$])?[ ]*(XP|vista|7)':'Windows $2',
 				'pl[ /-]?sql':'PL/SQL',
 				't[ /-]?sql':'T-SQL'
 			};
