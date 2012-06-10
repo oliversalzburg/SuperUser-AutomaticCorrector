@@ -1,11 +1,11 @@
 ﻿// ==UserScript==
-// @name			Super User Automatic Corrector
-// @author			Tom Wijsman
-// @version			1.0
-// @description		Using Jakub Hampl & Nathan Osman's framework to create a Super User specific Automatic Corrector.
-// @include			http://*.superuser.com/*
-// @include			http://*.askubuntu.com/*
-// @include			http://*.stackoverflow.com/*
+// @name        Super User Automatic Corrector
+// @author      TomWij on GitHub
+// @version     1.0
+// @description Using Jakub Hampl & Nathan Osman's framework to create a Super User specific Automatic Corrector.
+// @include     http://*.superuser.com/*
+// @include     http://*.askubuntu.com/*
+// @include     http://*.stackoverflow.com/*
 // ==/UserScript==
 
 function EmbedCodeOnPage(javascript_code) {
@@ -48,7 +48,7 @@ EmbedFunctionOnPage('AddToolbarButton', function(toolbar, icon, tooltip, callbac
 });
 
 EmbedFunctionOnPage('CorrectTitle', function(title) {
-	return title.replace(/^([a-z])/g, function(match) { return match.toUpperCase(); }).replace(/(i|I)ssue/g, ''); //.replace(/([A-Z]{2,})/g, function(i) { return i.toLowerCase() });
+	return title.replace(/^([a-z])/g, function(match) { return match.toUpperCase(); }).replace(/(?:issue|problem)/gi, '');
 });
 
 EmbedFunctionOnPage('CorrectBody', function(original_body) {
@@ -78,7 +78,6 @@ EmbedFunctionOnPage('CorrectBody', function(original_body) {
 				'shuting':'shutting',
 				'puting':'putting',
 				'instaled':'installed',
-				'windows phone':'Windows Phone',
 				'zune':'Zune',
 				'whoo?ping':'',
 				'just few':'just a few',
@@ -97,8 +96,7 @@ EmbedFunctionOnPage('CorrectBody', function(original_body) {
 
 			// This second batch of replacements can apply anywhere in the text
 			var variableReplacements = {
-				'\\bwindow[s$]':'Windows',
-				'\\bgnome(?=[ .!,]|\\d|$|\\n)':'GNOME',
+				'\\bwindow$':'Windows',
 				'\\b(a)n(?= +(?![aeiou]|HTML|user))':'$1',
 				'\\b(a)(?= +[aeiou](?!ser))':'$1n'
 			};
@@ -108,7 +106,7 @@ EmbedFunctionOnPage('CorrectBody', function(original_body) {
 
 			// These names will be properly capitalized and excessive (or missing) whitespace inside these terms will be replaced
 			var trademarks = [
-				"2D", "3D", "AMD", "Android", "AppleScript", "ASUS", "ATI", "BIOS", "Bluetooth", "Chrome", "Chromium", "CMOS", "CPU", "DirectX", "DivX", "DVD", "Eclipse", "Edubuntu", "Eee PC", "Firefox", "FireWire", "GarageBand", "GHz", "Gmail", "Google", "HDD", "iBookstore", "iCal", "iChat", "IDE", "iLife", "Intel", "iMac", "iMovie", "iOS", "IP", "iPad", "iPhone", "iPhoto", "iPod", "ISP", "iTunes", "iWeb", "iWork", "JavaScript", "jQuery", "KDE", "Kubuntu", "Lenovo", "Linux", "Lubuntu", "LXDE", "MacBook", "MacPorts", "MHz", "MobileMe", "MySQL", "Nvidia", "OpenGL", "Oracle", "OS X", "PayPal", "POSIX", "PowerBook", "PowerPoint", "QuickTime", "RAM", "SATA", "SSD", "Stack Overflow", "TCP", "TextEdit", "TextMate", "ThinkPad", "Ubuntu", "UDP", "Unity", "UNIX", "USB", "Vista", "VPN", "VMware", "WebKit", "Wi-Fi", "WordPress", "Xcode", "Xfce", "XMLHttpRequest", "Xserve", "Xubuntu"
+				"2D", "3D", "AMD", "Android", "AppleScript", "ASUS", "ATI", "BIOS", "Bluetooth", "Chrome", "Chromium", "CMOS", "CPU", "DirectX", "DivX", "DVD", "Eclipse", "Edubuntu", "Eee PC", "Firefox", "FireWire", "GarageBand", "GHz", "Gmail", "GNOME", "Google", "HDD", "iBookstore", "iCal", "iChat", "IDE", "iLife", "Intel", "iMac", "iMovie", "iOS", "IP", "iPad", "iPhone", "iPhoto", "iPod", "ISP", "iTunes", "iWeb", "iWork", "JavaScript", "jQuery", "KDE", "Kubuntu", "Lenovo", "Linux", "Lubuntu", "LXDE", "MacBook", "MacPorts", "MHz", "MobileMe", "MySQL", "Nvidia", "OpenGL", "Oracle", "OS X", "PayPal", "POSIX", "PowerBook", "PowerPoint", "QuickTime", "RAM", "SATA", "SSD", "Stack Overflow", "Super User", "TCP", "TextEdit", "TextMate", "ThinkPad", "Ubuntu", "UDP", "Unity", "UNIX", "USB", "Vista", "VPN", "VMware", "WebKit", "Wi-Fi", "Windows", "Windows Phone", "WordPress", "Xcode", "Xfce", "XMLHttpRequest", "Xserve", "Xubuntu"
 			];
 
 			// Replace trademarks
@@ -167,9 +165,9 @@ EmbedFunctionOnPage('CorrectBody', function(original_body) {
 			.replace(/\.\?/gi, '?')
 			.replace(/\.:/gi, ':')
 			// Reduce multiple question mark
-			.replace(/\?\?+/gi, '?')
+			.replace(/\?+/gi, '?')
 			// Reduce multiple exclamation mark
-			.replace(/!!+/gi, '!')
+			.replace(/!+/gi, '!')
 			;return body;
 		},
 
@@ -256,7 +254,7 @@ EmbedFunctionOnPage('CorrectBody', function(original_body) {
 			.replace(/(?:[\s^])(\w+(\.\w+){2,})\b(?!\/)/gi, function(match,url) { return match.replace( url, '`' + url + '`' ); })
 			;return body;
 		},
-		
+
 		AddKeyboardMarkup : function(body) {
 			body = body
 			.replace(/\bf[1-9][0-2]?\b/gi, function(match) { return "<kbd>" + match + "</kbd>"; })
@@ -271,10 +269,10 @@ EmbedFunctionOnPage('CorrectBody', function(original_body) {
 			;return body;
 		},
 	};
-	
+
 	var CODE_BLOCK_MARKER = "###µ²";
 	var URL_MARKER = "###µ³";
-	
+
 	codeBlocks = original_body.match(/(^[ ]{4}(.|([\r\n][ ]{4}))*)|`[^`]*`|<pre>[^<]*<\/pre>/gim);
 	textOnly = original_body;
 	if( null != codeBlocks ) {
@@ -282,7 +280,7 @@ EmbedFunctionOnPage('CorrectBody', function(original_body) {
 			textOnly = textOnly.replace( codeBlocks[ i ], CODE_BLOCK_MARKER + i );
 		}
 	}
-	
+
 	// Find URLs and replace them by markers
 	urls = textOnly.match(/[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi);
 	if( null != urls ) {
@@ -294,16 +292,16 @@ EmbedFunctionOnPage('CorrectBody', function(original_body) {
 	// Run cleanup process
 	for (var correction in corrections)
 		textOnly = corrections[correction](textOnly);
-	
+
 	correctedBody = textOnly;
-		
+
 	// Place URLs blocks back in
 	if( null != urls ) {
 		for( var i = 0; i < urls.length; ++i ) {
 			correctedBody = correctedBody.replace( URL_MARKER + i, urls[ i ] );
 		}
 	}
-	
+
 	// Place code blocks back in
 	if( null != codeBlocks ) {
 		for( var i = 0; i < codeBlocks.length; ++i ) {
@@ -427,7 +425,7 @@ EmbedFunctionOnPage('diff', function(o, n) {
 });
 
 EmbedFunctionOnPageAndExecute(function() {
-	LoadDependentScript('http://files.quickmediasolutions.com/js/jquery.livequery.js', function() {
+	LoadDependentScript('https://raw.github.com/brandonaaron/livequery/master/jquery.livequery.js', function() {
 		$('.wmd-button-row').livequery(function() {
 			var toolbar = $(this);
 
