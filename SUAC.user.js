@@ -55,7 +55,7 @@ EmbedFunctionOnPage('CorrectTitle', function(title) {
 	return title.replace(/^([a-z])/g, function(match) { return match.toUpperCase(); }).replace(/(?:issue|problem)/gi, '');
 });
 
-EmbedFunctionOnPage('CorrectBody', function(original_body) {
+EmbedFunctionOnPage('CorrectBody', function(originalBody) {
 	var corrections = {
 		CorrectCommonMisspellings : function(body) {
 			// This first batch of replacements only applies to tokens inside of word boundaries!
@@ -271,44 +271,23 @@ EmbedFunctionOnPage('CorrectBody', function(original_body) {
 		},
 	};
 
-	var CODE_BLOCK_MARKER = "###µ²";
-	var URL_MARKER = "###µ³";
+	var MARKER = "###µ";
 
-	codeBlocks = original_body.match(/(^[ ]{4}(.|([\r\n][ ]{4}))*)|`[^`]*`|<pre>[^<]*<\/pre>/gim);
-	textOnly = original_body;
-	if( null != codeBlocks ) {
-		for( var i = 0; i < codeBlocks.length; ++i ) {
-			textOnly = textOnly.replace( codeBlocks[ i ], CODE_BLOCK_MARKER + i );
-		}
-	}
+	// Find code blocks and URLs and replace them by markers.
+	window.retain = originalBody.match(/(^[ ]{4}(.|([\r\n][ ]{4}))*)|`[^`]*`|<pre>[^<]*<\/pre>|[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gim) || [];
+	correctedBody = originalBody;
+	for (var i = 0; i < retain.length; ++i)
+		correctedBody = correctedBody.replace(window.retain[i], MARKER + i);
 
-	// Find URLs and replace them by markers
-	urls = textOnly.match(/[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi);
-	if( null != urls ) {
-		for( var i = 0; i < urls.length; ++i ) {
-			textOnly = textOnly.replace( urls[ i ], URL_MARKER + i );
-		}
-	}
+	// Find extra stuff that can be turned into code blocks.
+	correctedBody = correctedBody.replace(/\b .exe\b/gi, function(_) { window.retain.push(' `.exe`'); return MARKER + (window.retain.length - 1); });
 
-	// Run cleanup process
+	// Run cleanup process.
 	for (var correction in corrections)
-		textOnly = corrections[correction](textOnly);
+		correctedBody = corrections[correction](correctedBody);
 
-	correctedBody = textOnly;
-
-	// Place URLs blocks back in
-	if( null != urls ) {
-		for( var i = 0; i < urls.length; ++i ) {
-			correctedBody = correctedBody.replace( URL_MARKER + i, urls[ i ] );
-		}
-	}
-
-	// Place code blocks back in
-	if( null != codeBlocks ) {
-		for( var i = 0; i < codeBlocks.length; ++i ) {
-			correctedBody = correctedBody.replace( CODE_BLOCK_MARKER + i, codeBlocks[ i ] );
-		}
-	}
+	// Place code blocks and URLs back in.
+	correctedBody = correctedBody.replace(new RegExp(MARKER + '([0-9]+)', 'gi'), function(_,num) { return window.retain[num]; });
 
 	return correctedBody;
 });
@@ -428,7 +407,7 @@ EmbedFunctionOnPage('diff', function(o, n) {
 EmbedFunctionOnPageAndExecute(function() {
 	$(document).bind('DOMNodeInserted', function(event) {
 		var toolbar = $(event.target);
-		if (toolbar.attr('id').indexOf('wmd-button-row') !== 0)
+		if (toolbar.attr('id') === undefined || toolbar.attr('id').indexOf('wmd-button-row') !== 0)
 			return;
 
 		window.setTimeout(function() {
