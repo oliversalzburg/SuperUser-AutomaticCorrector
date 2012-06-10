@@ -1,4 +1,5 @@
-﻿// ==UserScript==
+﻿
+// ==UserScript==
 // @name        Super User Automatic Corrector
 // @author      TomWij on GitHub
 // @version     1.0
