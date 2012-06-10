@@ -252,7 +252,7 @@ EmbedFunctionOnPage('CorrectBody', function(original_body) {
 		ApplyFixedWidth : function(body) {
 			body = body
 			// Hostnames as fixed-width.
-			.replace(/[\s^](\w{2,}(\.\w{2,}){2,})\b(?!\/)/gi, function(match,url) { return '`' + url + '`'; })
+			.replace(/(?:[\s^])(\w+(\.\w+){2,})\b(?!\/)/gi, function(match,url) { return match.replace( url, '`' + url + '`' ); })
 			;return body;
 		},
 
