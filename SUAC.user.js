@@ -3,10 +3,13 @@
 // @name        Super User Automatic Corrector
 // @author      TomWij on GitHub
 // @version     1.0
-// @description Using Jakub Hampl & Nathan Osman's framework to create a Super User specific Automatic Corrector.
-// @include     http://*.superuser.com/*
-// @include     http://*.askubuntu.com/*
-// @include     http://*.stackoverflow.com/*
+// @description By TomWij on GitHub. Using Jakub Hampl & Nathan Osman's framework to create a Super User specific Automatic Corrector.
+// @include     http://superuser.com/*
+// @include     http://askubuntu.com/*
+// @include     http://stackoverflow.com/*
+// @include     http://meta.superuser.com/*
+// @include     http://meta.askubuntu.com/*
+// @include     http://meta.stackoverflow.com/*
 // ==/UserScript==
 
 function EmbedCodeOnPage(javascript_code) {
