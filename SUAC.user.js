@@ -145,7 +145,8 @@ EmbedFunctionOnPage('CorrectBody', function(original_body) {
 
 		CorrectFileSizes : function(body) {
 			body = body
-			.replace(/([0-9]) ?(K|M|G|T)(i)?(B)\b/gi, function(match,$1,$2,$3,$4) { return $1 + ' ' + $2.toUpperCase() + (($3)?$3:'') + $4; } )
+			// Only apply to full lower-case. Otherwise mb is converted to Mb.
+			.replace(/([0-9]) ?(k|m|g|t)(i)?b\b/g, function(match,$1,$2,$3,$4) { return $1 + ' ' + $2.toUpperCase() + (($3)?$3:'') + 'B'; } )
 			;return body;
 		},
 
