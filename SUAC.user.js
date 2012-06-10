@@ -69,7 +69,7 @@ EmbedFunctionOnPage('CorrectBody', function(original_body) {
 				'b4':'before',
 				'w[au]t':'what',
 				'alot':'a lot',
-				'I (got)':'I have',
+				'(I|(?:any|some)(?:one|body)) got':'$1 have',
 				'whos':'who\'s',
 				'thier':'their',
 				'cud':'could',
@@ -102,11 +102,12 @@ EmbedFunctionOnPage('CorrectBody', function(original_body) {
 			var variableReplacements = {
 				'\\bwindow$':'Windows',
 				'\\b(a)n(?= +(?![aeiou]|HTML|user))':'$1',
-				'\\b(a)(?= +[aeiou](?!ser))':'$1n'
+				'\\b(a)(?= +[aeiou](?!ser))':'$1n',
+				'^[ ]*((?:any|some)(?:one|body)) have':function (_,first) { return 'Does ' + first.toLowerCase() + ' have'; }
 			};
 
 			for (var wrong_word in variableReplacements)
-				body = body.replace(new RegExp(wrong_word, 'gi'), variableReplacements[wrong_word]);
+				body = body.replace(new RegExp(wrong_word, 'gim'), variableReplacements[wrong_word]);
 
 			// These names will be properly capitalized and excessive (or missing) whitespace inside these terms will be replaced
 			var trademarks = [
@@ -175,12 +176,6 @@ EmbedFunctionOnPage('CorrectBody', function(original_body) {
 			;return body;
 		},
 
-		CorrectShortSentences : function(body) {
-			body = body
-			.replace(/Any idea(s)?[?]/gi, 'Do you have any idea how I can solve this?')
-			;return body;
-		},
-
 		ProperSpacesAroundPunctuationMarks : function (body) {
 			body = body
 			// Fix (insert) space after punctuation mark; remove spaces before punctuation mark
@@ -205,7 +200,7 @@ EmbedFunctionOnPage('CorrectBody', function(original_body) {
 			.replace(/^ *[b|B]ut */gim, '')
 			.replace(/What [cw]ould be the (?:problem|issue)[.:!?, ]*/gim, '')
 			.replace(/^Wow[.:!?, ]*/gi, '')
-			.replace(/(?:Please|Help|Thanks)[.?!,]*/gi, '')
+			.replace(/(?:Please|Help\b|Thanks?)[.?!,]*/gi, '')
 			;return body;
 		},
 
