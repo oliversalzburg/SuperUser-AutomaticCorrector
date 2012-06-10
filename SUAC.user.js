@@ -429,28 +429,28 @@ EmbedFunctionOnPage('diff', function(o, n) {
 });
 
 EmbedFunctionOnPageAndExecute(function() {
-	LoadDependentScript('https://raw.github.com/brandonaaron/livequery/master/jquery.livequery.js', function() {
-		$('.wmd-button-row').livequery(function() {
-			var toolbar = $(this);
+	$(document).bind('DOMNodeInserted', function(event) {
+		var toolbar = $(event.target);
+		if (toolbar.attr('id').indexOf('wmd-button-row') !== 0)
+			return;
 
-			window.setTimeout(function() {
-				AddToolbarButton(toolbar, 'http://i.stack.imgur.com/wWIIc.png', 'Stack Exchange Post Editor',
-				function() {
-					var title = toolbar.parents('.post-editor').find('#title');
+		window.setTimeout(function() {
+			AddToolbarButton(toolbar, 'http://i.stack.imgur.com/wWIIc.png', 'Stack Exchange Post Editor',
+			function() {
+				var title = toolbar.parents('.post-editor').find('#title');
 
-					if (title.length) {
-						var new_title = CorrectTitle(title.attr('value'));
-						title.attr('value', new_title);
-						$('#question-header .question-hyperlink').text(new_title)
-					}
+				if (title.length) {
+					var new_title = CorrectTitle(title.attr('value'));
+					title.attr('value', new_title);
+					$('#question-header .question-hyperlink').text(new_title)
+				}
 
-					var editor = toolbar.parents('.wmd-container').find('.wmd-input');
-					var original = editor.val();
-					var corrected = CorrectBody(original);
-					editor.val(corrected);
-					toolbar.parents('.post-editor').find('.wmd-preview').html(diffString(original, corrected).replace(/\n/g, '<br />'));
-				});
-			}, 100);
-		});
+				var editor = toolbar.parents('.wmd-container').find('.wmd-input');
+				var original = editor.val();
+				var corrected = CorrectBody(original);
+				editor.val(corrected);
+				toolbar.parents('.post-editor').find('.wmd-preview').html(diffString(original, corrected).replace(/\n/g, '<br />'));
+			});
+		}, 100);
 	});
 });
