@@ -72,7 +72,7 @@ EmbedFunctionOnPage('CorrectBody', function(original_body) {
 				'cud':'could',
 				'pl[sz]':'please',
 				'(can|doesn|don|won|hasn|haven|isn|didn)t':'$1\'t',
-				'ubunto|ubunut|ubunutu|ubunu|ubntu|ubutnu|uuntu|unbuntu|ubunt|ubutu':'Ubuntu',
+				'(?:ubunto|ubunut|ubunutu|ubunu|ubntu|ubutnu|uuntu|unbuntu|ubunt|ubutu)':'Ubuntu',
 				'ty':'Thank you',
 				'n1':'Nice one',
 				'any1':'anyone',
@@ -254,7 +254,6 @@ EmbedFunctionOnPage('CorrectBody', function(original_body) {
 	var CODE_BLOCK_MARKER = "###µ²";
 	var URL_MARKER = "###µ³";
 	
-	// Find pre-formatted blocks of text and replace them by markers
 	codeBlocks = original_body.match(/(^[ ]{4}(.|([\r\n][ ]{4}))*)|`[^`]*`|<pre>[^<]*<\/pre>/gim);
 	textOnly = original_body;
 	if( null != codeBlocks ) {
@@ -283,7 +282,7 @@ EmbedFunctionOnPage('CorrectBody', function(original_body) {
 			correctedBody = correctedBody.replace( URL_MARKER + i, urls[ i ] );
 		}
 	}
-		
+	
 	// Place code blocks back in
 	if( null != codeBlocks ) {
 		for( var i = 0; i < codeBlocks.length; ++i ) {
