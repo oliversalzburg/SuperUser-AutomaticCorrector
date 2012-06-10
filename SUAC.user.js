@@ -88,7 +88,7 @@ EmbedFunctionOnPage('CorrectBody', function(original_body) {
 				'therfore':'therefore',
 				'unrestrictive':'nonrestrictive',
 				'm((icro[s$]oft)|s)':'Microsoft',
-				'win(dow[s$])?(XP|vista|7)':'Windows $2',
+				'win(dow[s$])?[ ]*(XP|vista|7)':'Windows $2',
 				'pl[ /-]?sql':'PL/SQL',
 				't[ /-]?sql':'T-SQL'
 			};
@@ -99,6 +99,7 @@ EmbedFunctionOnPage('CorrectBody', function(original_body) {
 			// This second batch of replacements can apply anywhere in the text
 			var variableReplacements = {
 				'\\bwindow[s$]':'Windows',
+				'\\bgnome(?=[ .!,]|\\d|$|\\n)':'GNOME',
 				'\\b(a)n(?= +(?![aeiou]|HTML|user))':'$1',
 				'\\b(a)(?= +[aeiou](?!ser))':'$1n'
 			};
@@ -108,7 +109,7 @@ EmbedFunctionOnPage('CorrectBody', function(original_body) {
 
 			// These names will be properly capitalized and excessive (or missing) whitespace inside these terms will be replaced
 			var trademarks = [
-				"AMD", "Android", "AppleScript", "ASUS", "ATI", "Bluetooth", "CPU", "Debian", "DivX", "DVD", "Eclipse", "Eee PC", "FireWire", "GarageBand", "GHz", "Gmail", "Google", "iBookstore", "iCal", "iChat", "iLife", "Intel", "iMac", "iMovie", "iOS", "IP", "iPad", "iPhone", "iPhoto", "iPod", "ISP", "iTunes", "iWeb", "iWork", "JavaScript", "jQuery", "Lenovo", "MacBook", "MacPorts", "MHz", "MobileMe", "MySQL", "Nvidia", "Oracle", "OS X", "PayPal", "PowerBook", "PowerPoint", "QuickTime", "RAM", "SSD", "Stack Overflow", "TextEdit", "TextMate", "ThinkPad", "Ubuntu", "USB", "Vista", "VPN", "VMware", "WebKit", "Wi-Fi", "WordPress", "Xcode", "XMLHttpRequest", "Xserve"
+				"2D", "3D", "AMD", "Android", "AppleScript", "ASUS", "ATI", "BIOS", "Bluetooth", "Chrome", "Chromium", "CMOS", "CPU", "DirectX", "DivX", "DVD", "Eclipse", "Edubuntu", "Eee PC", "Firefox", "FireWire", "GarageBand", "GHz", "Gmail", "Google", "HDD", "iBookstore", "iCal", "iChat", "IDE", "iLife", "Intel", "iMac", "iMovie", "iOS", "IP", "iPad", "iPhone", "iPhoto", "iPod", "ISP", "iTunes", "iWeb", "iWork", "JavaScript", "jQuery", "KDE", "Kubuntu", "Lenovo", "Linux", "Lubuntu", "LXDE", "MacBook", "MacPorts", "MHz", "MobileMe", "MySQL", "Nvidia", "OpenGL", "Oracle", "OS X", "PayPal", "POSIX", "PowerBook", "PowerPoint", "QuickTime", "RAM", "SATA", "SSD", "Stack Overflow", "TCP", "TextEdit", "TextMate", "ThinkPad", "Ubuntu", "UDP", "Unity", "UNIX", "USB", "Vista", "VPN", "VMware", "WebKit", "Wi-Fi", "WordPress", "Xcode", "Xfce", "XMLHttpRequest", "Xserve", "Xubuntu"
 			];
 
 			// Replace trademarks
@@ -148,16 +149,25 @@ EmbedFunctionOnPage('CorrectBody', function(original_body) {
 			;return body;
 		},
 
-		CorrectMarks : function(body) {
+		CorrectRepeatedPunctuation : function(body) {
 			body = body
-			.replace(/\.\.\.+/gi, '$$$²$$$')
+			// Triple or more commas are likely an intended elipsis
+			.replace(/,,,+/gi, function(match) { return match.replace(/,/g, '.'); })
+			// Correct multiple commas into one
+			.replace(/,+/gi, ',')
+			// More than three dots should be only three, an elipsis
+			.replace(/\.\.\.+/gi, '@@@²@@@')
+			// Correct multiple dots into one
 			.replace(/\.+/gi, '.')
+			// Correct full stops interspersed by spaces
 			.replace(/[.]([ ]+[.]+)+/gi, '.')
+			// Correct full stop followed by other punctuation
 			.replace(/\.\?/gi, '?')
 			.replace(/\.:/gi, ':')
-			.replace(/\?\?+/gi, '?') /* Fix question mark repetition */
-			.replace(/!!+/gi, '!') /* Fix exclamation mark repettition */
-			.replace(/(?!\w) ([.!?])/gi, '$1') /* Fix (single) space before punctuation mark */
+			// Reduce multiple question mark
+			.replace(/\?\?+/gi, '?')
+			// Reduce multiple exclamation mark
+			.replace(/!!+/gi, '!')
 			;return body;
 		},
 
@@ -169,6 +179,7 @@ EmbedFunctionOnPage('CorrectBody', function(original_body) {
 
 		ProperSpacesAroundPunctuationMarks : function (body) {
 			body = body
+			// Fix (insert) space after punctuation mark; remove spaces before punctuation mark
 			.replace(/(((http:\/\/|https:\/\/|ftp:\/\/|www\.)[a-zA-Z0-9\/.%_#~-]*)|(http:\/\/|https:\/\/|ftp:\/\/)?([0-9]+[.]?)+)?([ ]*[.:!?,]+[ ]*)/gi, function (orig,look,_,_,_,_,match) { return look?orig:match.trim().substring(0,1) + ' '; })
 			// Handle special cases
 			.replace(/www\.[ ]/gi, 'www.')
@@ -245,8 +256,8 @@ EmbedFunctionOnPage('CorrectBody', function(original_body) {
 		CorrectScriptMistakes : function(body) {
 			body = body
 
-			// CorrectMarks
-			.replace('$$$²$$$', '...')
+			// CorrectRepeatedPunctuation
+			.replace(/@@@²@@@/gi, '...')
 			;return body;
 		},
 	};
