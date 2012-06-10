@@ -99,6 +99,7 @@ EmbedFunctionOnPage('CorrectBody', function(original_body) {
 			// This second batch of replacements can apply anywhere in the text
 			var variableReplacements = {
 				'\\bwindow[s$]':'Windows',
+				'\\bgnome(?=[ .!,]|\\d|$|\\n)':'GNOME',
 				'\\b(a)n(?= +(?![aeiou]|HTML|user))':'$1',
 				'\\b(a)(?= +[aeiou](?!ser))':'$1n'
 			};
@@ -108,7 +109,7 @@ EmbedFunctionOnPage('CorrectBody', function(original_body) {
 
 			// These names will be properly capitalized and excessive (or missing) whitespace inside these terms will be replaced
 			var trademarks = [
-				"AMD", "Android", "AppleScript", "ASUS", "ATI", "Bluetooth", "CPU", "DivX", "DVD", "Eclipse", "Eee PC", "FireWire", "GarageBand", "GHz", "Gmail", "Google", "iBookstore", "iCal", "iChat", "iLife", "Intel", "iMac", "iMovie", "iOS", "IP", "iPad", "iPhone", "iPhoto", "iPod", "ISP", "iTunes", "iWeb", "iWork", "JavaScript", "jQuery", "Lenovo", "MacBook", "MacPorts", "MHz", "MobileMe", "MySQL", "Nvidia", "Oracle", "OS X", "PayPal", "PowerBook", "PowerPoint", "QuickTime", "RAM", "SSD", "Stack Overflow", "TextEdit", "TextMate", "ThinkPad", "Ubuntu", "USB", "Vista", "VPN", "VMware", "WebKit", "Wi-Fi", "WordPress", "Xcode", "XMLHttpRequest", "Xserve"
+				"2D", "3D", "AMD", "Android", "AppleScript", "ASUS", "ATI", "Bluetooth", "CPU", "DivX", "DVD", "Eclipse", "Edubuntu", "Eee PC", "FireWire", "GarageBand", "GHz", "Gmail", "Google", "iBookstore", "iCal", "iChat", "iLife", "Intel", "iMac", "iMovie", "iOS", "IP", "iPad", "iPhone", "iPhoto", "iPod", "ISP", "iTunes", "iWeb", "iWork", "JavaScript", "jQuery", "KDE", "Kubuntu", "Lenovo", "Linux", "Lubuntu", "LXDE", "MacBook", "MacPorts", "MHz", "MobileMe", "MySQL", "Nvidia", "Oracle", "OS X", "PayPal", "POSIX", "PowerBook", "PowerPoint", "QuickTime", "RAM", "SSD", "Stack Overflow", "TextEdit", "TextMate", "ThinkPad", "Ubuntu", "Unity", "UNIX", "USB", "Vista", "VPN", "VMware", "WebKit", "Wi-Fi", "WordPress", "Xcode", "Xfce", "XMLHttpRequest", "Xserve", "Xubuntu"
 			];
 
 			// Replace trademarks
