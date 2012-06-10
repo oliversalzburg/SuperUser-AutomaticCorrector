@@ -257,7 +257,7 @@ EmbedFunctionOnPage('CorrectBody', function(original_body) {
 			body = body
 
 			// CorrectRepeatedPunctuation
-			.replace('@@@²@@@', '...')
+			.replace(/@@@²@@@/gi, '...')
 			;return body;
 		},
 	};
