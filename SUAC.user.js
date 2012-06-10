@@ -87,7 +87,7 @@ EmbedFunctionOnPage('CorrectBody', function(original_body) {
 				'therfore':'therefore',
 				'unrestrictive':'nonrestrictive',
 				'm((icro[s$]oft)|s)':'Microsoft',
-				'win(dow[s$])?(XP|vista|7)':'Windows $2',
+				'win(dow[s$])?[ ]*(XP|vista|7)':'Windows $2',
 				'pl[ /-]?sql':'PL/SQL',
 				't[ /-]?sql':'T-SQL'
 			};
@@ -98,6 +98,7 @@ EmbedFunctionOnPage('CorrectBody', function(original_body) {
 			// This second batch of replacements can apply anywhere in the text
 			var variableReplacements = {
 				'\\bwindow[s$]':'Windows',
+				'\\bgnome(?=[ .!,]|\\d|$|\\n)':'GNOME',
 				'\\b(a)n(?= +(?![aeiou]|HTML|user))':'$1',
 				'\\b(a)(?= +[aeiou](?!ser))':'$1n'
 			};
@@ -107,7 +108,7 @@ EmbedFunctionOnPage('CorrectBody', function(original_body) {
 
 			// These names will be properly capitalized and excessive (or missing) whitespace inside these terms will be replaced
 			var trademarks = [
-				"AMD", "Android", "AppleScript", "ASUS", "ATI", "Bluetooth", "CPU", "DivX", "DVD", "Eclipse", "Eee PC", "FireWire", "GarageBand", "GHz", "Gmail", "Google", "iBookstore", "iCal", "iChat", "iLife", "Intel", "iMac", "iMovie", "iOS", "IP", "iPad", "iPhone", "iPhoto", "iPod", "ISP", "iTunes", "iWeb", "iWork", "JavaScript", "jQuery", "Lenovo", "MacBook", "MacPorts", "MHz", "MobileMe", "MySQL", "Nvidia", "Oracle", "OS X", "PayPal", "PowerBook", "PowerPoint", "QuickTime", "RAM", "SSD", "Stack Overflow", "TextEdit", "TextMate", "ThinkPad", "Ubuntu", "USB", "Vista", "VPN", "VMware", "WebKit", "Wi-Fi", "WordPress", "Xcode", "XMLHttpRequest", "Xserve"
+				"2D", "3D", "AMD", "Android", "AppleScript", "ASUS", "ATI", "BIOS", "Bluetooth", "Chrome", "Chromium", "CMOS", "CPU", "DirectX", "DivX", "DVD", "Eclipse", "Edubuntu", "Eee PC", "Firefox", "FireWire", "GarageBand", "GHz", "Gmail", "Google", "HDD", "iBookstore", "iCal", "iChat", "IDE", "iLife", "Intel", "iMac", "iMovie", "iOS", "IP", "iPad", "iPhone", "iPhoto", "iPod", "ISP", "iTunes", "iWeb", "iWork", "JavaScript", "jQuery", "KDE", "Kubuntu", "Lenovo", "Linux", "Lubuntu", "LXDE", "MacBook", "MacPorts", "MHz", "MobileMe", "MySQL", "Nvidia", "OpenGL", "Oracle", "OS X", "PayPal", "POSIX", "PowerBook", "PowerPoint", "QuickTime", "RAM", "SATA", "SSD", "Stack Overflow", "TCP", "TextEdit", "TextMate", "ThinkPad", "Ubuntu", "UDP", "Unity", "UNIX", "USB", "Vista", "VPN", "VMware", "WebKit", "Wi-Fi", "WordPress", "Xcode", "Xfce", "XMLHttpRequest", "Xserve", "Xubuntu"
 			];
 
 			// Replace trademarks
@@ -143,20 +144,32 @@ EmbedFunctionOnPage('CorrectBody', function(original_body) {
 
 		CorrectFileSizes : function(body) {
 			body = body
-			.replace(/([0-9]) ?(K|M|G|T)(i)?(B)\b/gi, function(match,$1,$2,$3,$4) { return $1 + ' ' + $2.toUpperCase() + (($3)?$3:'') + $4; } )
+			// Only apply to full lower-case. Otherwise mb is converted to Mb.
+			.replace(/([0-9]) ?(k|m|g|t)(i)?b\b/g, function(match,$1,$2,$3,$4) { return $1 + ' ' + $2.toUpperCase() + (($3)?$3:'') + 'B'; } )
+			// When already upper-case, just make sure the spacing is correct.
+			.replace(/([0-9])(K|M|G|T)(i)?B\b/g, function(match,$1,$2,$3,$4) { return $1 + ' ' + $2 + (($3)?$3:'') + 'B'; } )
 			;return body;
 		},
 
-		CorrectMarks : function(body) {
+		CorrectRepeatedPunctuation : function(body) {
 			body = body
-			.replace(/\.\.\.+/gi, '$$$²$$$')
+			// Triple or more commas are likely an intended elipsis
+			.replace(/,,,+/gi, function(match) { return match.replace(/,/g, '.'); })
+			// Correct multiple commas into one
+			.replace(/,+/gi, ',')
+			// More than three dots should be only three, an elipsis
+			.replace(/\.\.\.+/gi, '@@@²@@@')
+			// Correct multiple dots into one
 			.replace(/\.+/gi, '.')
+			// Correct full stops interspersed by spaces
 			.replace(/[.]([ ]+[.]+)+/gi, '.')
+			// Correct full stop followed by other punctuation
 			.replace(/\.\?/gi, '?')
 			.replace(/\.:/gi, ':')
-			.replace(/\?\?+/gi, '?') /* Fix question mark repetition */
-			.replace(/!!+/gi, '!') /* Fix exclamation mark repettition */
-			.replace(/(?!\w) ([.!?])/gi, '$1') /* Fix (single) space before punctuation mark */
+			// Reduce multiple question mark
+			.replace(/\?\?+/gi, '?')
+			// Reduce multiple exclamation mark
+			.replace(/!!+/gi, '!')
 			;return body;
 		},
 
@@ -168,13 +181,14 @@ EmbedFunctionOnPage('CorrectBody', function(original_body) {
 
 		ProperSpacesAroundPunctuationMarks : function (body) {
 			body = body
+			// Fix (insert) space after punctuation mark; remove spaces before punctuation mark
 			.replace(/(((http:\/\/|https:\/\/|ftp:\/\/|www\.)[a-zA-Z0-9\/.%_#~-]*)|(http:\/\/|https:\/\/|ftp:\/\/)?([0-9]+[.]?)+)?([ ]*[.:!?,]+[ ]*)/gi, function (orig,look,_,_,_,_,match) { return look?orig:match.trim().substring(0,1) + ' '; })
 			// Handle special cases
 			.replace(/www\.[ ]/gi, 'www.')
 			.replace(/:[ ]\/\//gi, '://')
 			.replace(/![ ]\[/gi, '![')
-			// Fix erroneous spaces inserted by function in front of `)`, `*` and end of line.
-			.replace(/([.:!?,])[ ](\*|\)|$)/gim, '$1$2')
+			// Fix erroneous spaces inserted by function in front of `\`, `/`, `)`, `*` and end of line.
+			.replace(/([.:!?,])[ ]([\\\/)*]|$)/gim, '$1$2')
 			// XXX Breaks: "Oh. So, that was cool." into "Oh.so, that was cool." which is unacceptable. We will want to remove any words from here that could be used after a "." and then uncomment it.
 			//.replace(/\.[ ]+(ac|ad|ae|aero|af|ag|ai|al|am|an|ao|aq|as|asia|at|aw|ax|az|ba|bb|be|bf|bg|bh|bi|biz|bj|bm|bo|br|bs|bt|bw|by|bz|ca|cat|cc|cd|cf|cg|ch|ci|cl|cm|cn|co|com|coop|cr|cu|cv|cx|cz|de|dj|dk|dm|do|dz|ec|edu|ee|eg|es|eu|fi|fm|fo|fr|ga|gd|ge|gf|gg|gh|gi|gl|gm|gov|gp|gq|gr|gs|gw|gy|hk|hm|hn|hr|ht|hu|id|ie|im|in|info|int|io|iq|ir|is|it|je|jo|jobs|jp|kg|ki|km|kn|kr|ky|kz|la|lc|li|lk|ls|lt|lu|lv|ly|ma|mc|md|me|mg|mh|mil|mk|ml|mn|mo|mobi|mp|mq|mr|ms|mu|museum|mv|mw|mx|my|na|name|nc|ne|net|nf|nl|no|nr|nu|org|pa|pe|pf|ph|pk|pl|pm|pn|pr|pro|ps|pt|pw|qa|re|ro|rs|ru|rw|sa|sb|sc|sd|se|sg|sh|si|sk|sl|sm|sn|so|sr|st|su|sy|sz|tc|td|tel|tf|tg|th|tj|tk|tl|tm|tn|to|travel|tt|tv|tw|ua|ug|us|uz|va|vc|vg|vi|vn|vu|wf|ws|yt|xxx)\b/gi, function(match) { return '.' + match.toLowerCase(); })
 			//.replace(/\.It'/gm, '. It\'')
@@ -220,9 +234,11 @@ EmbedFunctionOnPage('CorrectBody', function(original_body) {
 			.replace(/Ftp:\/\//gi, 'ftp://')
 			.replace(/Www\./gi, 'www.')
 			// i.e.
-			.replace(/(\s|^)+I\.[ ]e\.[ ](\S)([' ]*)/gim, function(match, pre, postFirstChar, postSecondChar) { return pre + 'i.e. ' + ((postFirstChar.toLowerCase()=='i' && postSecondChar) ? postFirstChar.toUpperCase() : postFirstChar.toLowerCase()) + postSecondChar; })
+			.replace(/(\s|^|[(])i\.[ ]e\.[ ](\S)([' ]*)/gim, function(match, pre, postFirstChar, postSecondChar) { return pre + 'i.e. ' + ((postFirstChar.toLowerCase()=='i' && postSecondChar) ? postFirstChar.toUpperCase() : postFirstChar.toLowerCase()) + postSecondChar; })
 			// e.g.
-			.replace(/(\s|^)+E\.[ ]g\.[ ](\S)([' ]*)/gim, function(match, pre, postFirstChar, postSecondChar) { return pre + 'e.g. ' + ((postFirstChar.toLowerCase()=='i' && postSecondChar) ? postFirstChar.toUpperCase() : postFirstChar.toLowerCase()) + postSecondChar; })
+			.replace(/(\s|^|[(])e\.[ ]g\.[ ](\S)([' ]*)/gim, function(match, pre, postFirstChar, postSecondChar) { return pre + 'e.g. ' + ((postFirstChar.toLowerCase()=='i' && postSecondChar) ? postFirstChar.toUpperCase() : postFirstChar.toLowerCase()) + postSecondChar; })
+			// P.S.
+			.replace(/(\s|^|[(])p\.[ ]s\.[ ](\S)([' ]*)/gim, function(match, pre, postFirstChar, postSecondChar) { return pre + 'P.S. ' + ((postFirstChar.toLowerCase()=='i' && postSecondChar) ? postFirstChar.toUpperCase() : postFirstChar.toLowerCase()) + postSecondChar; })
 
 			;return body;
 		},
@@ -237,35 +253,61 @@ EmbedFunctionOnPage('CorrectBody', function(original_body) {
 		ApplyFixedWidth : function(body) {
 			body = body
 			// Hostnames as fixed-width.
-			.replace(/[\s^](\w{2,}(\.\w{2,}){2,})\b(?!\/)/gi, function(match,url) { return '`' + url + '`'; })
+			.replace(/(?:[\s^])(\w+(\.\w+){2,})\b(?!\/)/gi, function(match,url) { return match.replace( url, '`' + url + '`' ); })
+			;return body;
+		},
+		
+		AddKeyboardMarkup : function(body) {
+			body = body
+			.replace(/\bf[1-9][0-2]?\b/gi, function(match) { return "<kbd>" + match + "</kbd>"; })
 			;return body;
 		},
 
 		CorrectScriptMistakes : function(body) {
 			body = body
 
-			// CorrectMarks
-			.replace('$$$²$$$', '...')
+			// CorrectRepeatedPunctuation
+			.replace(/@@@²@@@/gi, '...')
 			;return body;
 		},
 	};
-
+	
+	var CODE_BLOCK_MARKER = "###µ²";
+	var URL_MARKER = "###µ³";
+	
 	codeBlocks = original_body.match(/(^[ ]{4}(.|([\r\n][ ]{4}))*)|`[^`]*`|<pre>[^<]*<\/pre>/gim);
 	textOnly = original_body;
 	if( null != codeBlocks ) {
 		for( var i = 0; i < codeBlocks.length; ++i ) {
-			textOnly = textOnly.replace( codeBlocks[ i ], "###µ" + i + "³###" );
+			textOnly = textOnly.replace( codeBlocks[ i ], CODE_BLOCK_MARKER + i );
+		}
+	}
+	
+	// Find URLs and replace them by markers
+	urls = textOnly.match(/[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi);
+	if( null != urls ) {
+		for( var i = 0; i < urls.length; ++i ) {
+			textOnly = textOnly.replace( urls[ i ], URL_MARKER + i );
 		}
 	}
 
+	// Run cleanup process
 	for (var correction in corrections)
 		textOnly = corrections[correction](textOnly);
-
-	// Place code blocks back in
+	
 	correctedBody = textOnly;
+		
+	// Place URLs blocks back in
+	if( null != urls ) {
+		for( var i = 0; i < urls.length; ++i ) {
+			correctedBody = correctedBody.replace( URL_MARKER + i, urls[ i ] );
+		}
+	}
+	
+	// Place code blocks back in
 	if( null != codeBlocks ) {
 		for( var i = 0; i < codeBlocks.length; ++i ) {
-			correctedBody = correctedBody.replace( "###µ" + i + "³###", codeBlocks[ i ] );
+			correctedBody = correctedBody.replace( CODE_BLOCK_MARKER + i, codeBlocks[ i ] );
 		}
 	}
 
