@@ -280,7 +280,9 @@ EmbedFunctionOnPage('CorrectBody', function(originalBody) {
 		correctedBody = correctedBody.replace(window.retain[i], MARKER + i);
 
 	// Find extra stuff that can be turned into code blocks.
-	correctedBody = correctedBody.replace(/\b .exe\b/gi, function(_) { window.retain.push(' `.exe`'); return MARKER + (window.retain.length - 1); });
+	correctedBody = correctedBody
+	.replace(/\b .exe\b/gi, function(_) { window.retain.push(' `.exe`'); return MARKER + (window.retain.length - 1); })
+	.replace(/\babout:config\b/gi, function(_) { window.retain.push('`about:config`'); return MARKER + (window.retain.length - 1); });
 
 	// Run cleanup process.
 	for (var correction in corrections)
