@@ -7,7 +7,7 @@
       "matches": [ "http://*/*", "https://*/*" ],
       "run_at": "document_idle"
    } ],
-   "description": "Using Jakub Hampl & Nathan Osman's framework to create a Super User specific Automatic Corrector.",
+   "description": "By TomWij on GitHub. Using Jakub Hampl & Nathan Osman's framework to create a Super User specific Automatic Corrector.",
    "name": "Super User Automatic Corrector",
    "version": "1.0"
 }
