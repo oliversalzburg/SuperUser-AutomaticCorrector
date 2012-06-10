@@ -274,20 +274,21 @@ EmbedFunctionOnPage('CorrectBody', function(originalBody) {
 	var MARKER = "###µ";
 
 	// Find code blocks and URLs and replace them by markers.
-	window.retain = originalBody.match(/(^[ ]{4}(.|([\r\n][ ]{4}))*)|`[^`]*`|<pre>[^<]*<\/pre>|[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gim) || [];
+	var retain = originalBody.match(/(^[ ]{4}(.|([\r\n][ ]{4}))*)|`[^`]*`|<pre>[^<]*<\/pre>|[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gim) || [];
 	correctedBody = originalBody;
 	for (var i = 0; i < retain.length; ++i)
-		correctedBody = correctedBody.replace(window.retain[i], MARKER + i);
+		correctedBody = correctedBody.replace(retain[i], MARKER + i);
 
 	// Find extra stuff that can be turned into code blocks.
-	correctedBody = correctedBody.replace(/\b .exe\b/gi, function(_) { window.retain.push(' `.exe`'); return MARKER + (window.retain.length - 1); });
+	correctedBody = correctedBody
+	.replace(/\b .exe\b/gi, function(_) { retain.push(' `.exe`'); return MARKER + (retain.length - 1); });
 
 	// Run cleanup process.
 	for (var correction in corrections)
 		correctedBody = corrections[correction](correctedBody);
 
 	// Place code blocks and URLs back in.
-	correctedBody = correctedBody.replace(new RegExp(MARKER + '([0-9]+)', 'gi'), function(_,num) { return window.retain[num]; });
+	correctedBody = correctedBody.replace(new RegExp(MARKER + '([0-9]+)', 'gi'), function(_,num) { return retain[num]; });
 
 	return correctedBody;
 });
