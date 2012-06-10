@@ -151,7 +151,7 @@ EmbedFunctionOnPage('CorrectBody', function(original_body) {
 
 		CorrectMarks : function(body) {
 			body = body
-			.replace(/\.\.\.+/gi, '$$$²$$$')
+			.replace(/\.\.\.+/gi, '@@@²@@@')
 			.replace(/\.+/gi, '.')
 			.replace(/[.]([ ]+[.]+)+/gi, '.')
 			.replace(/\.\?/gi, '?')
@@ -247,7 +247,7 @@ EmbedFunctionOnPage('CorrectBody', function(original_body) {
 			body = body
 
 			// CorrectMarks
-			.replace('$$$²$$$', '...')
+			.replace('@@@²@@@', '...')
 			;return body;
 		},
 	};
