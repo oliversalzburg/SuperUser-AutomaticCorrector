@@ -3,10 +3,9 @@
 // @author			Tom Wijsman
 // @version			1.0
 // @description		Using Jakub Hampl & Nathan Osman's framework to create a Super User specific Automatic Corrector.
-// @include			http://superuser.com/*
-// @include			http://www.superuser.com/*
-// @include			http://askubuntu.com/*
-// @include			http://www.askubuntu.com/*
+// @include			http://*.superuser.com/*
+// @include			http://*.askubuntu.com/*
+// @include			http://*.stackoverflow.com/*
 // ==/UserScript==
 
 function EmbedCodeOnPage(javascript_code) {
