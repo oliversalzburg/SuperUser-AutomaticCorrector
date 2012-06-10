@@ -195,13 +195,13 @@ EmbedFunctionOnPage('CorrectBody', function(original_body) {
 
 		RemoveSentences : function(body) {
 			body = body
-			.replace(/I have this problem[.:!, ]*/gi, '')
+			.replace(/I have this (?:problem|issue)(?: too)?[.:!, ]*/gi, '')
 			.replace(/I am stumped[.:!, ]*/gi, '')
-			.replace(/[t|T]hanks for help[.:!, ]*/gi, '')
+			.replace(/Thanks for help(?:ing)?(?: me)?[.:!, ]*/gi, '')
 			.replace(/^ *[b|B]ut */gim, '')
-			.replace(/[w|W]hat could be the problem[.:!?, ]*/gim, '')
+			.replace(/What [cw]ould be the (?:problem|issue)[.:!?, ]*/gim, '')
 			.replace(/^Wow[.:!?, ]*/gi, '')
-			.replace(/[p|P]lease [h|H]elp[.?!,]*/gi, '')
+			.replace(/(?:Please|Help|Thanks)[.?!,]*/gi, '')
 			;return body;
 		},
 
