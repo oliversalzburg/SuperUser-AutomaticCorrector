@@ -149,16 +149,25 @@ EmbedFunctionOnPage('CorrectBody', function(original_body) {
 			;return body;
 		},
 
-		CorrectMarks : function(body) {
+		CorrectRepeatedPunctuation : function(body) {
 			body = body
+			// Triple or more commas are likely an intended elipsis
+			.replace(/,,,+/gi, function(match) { return match.replace(/,/g, '.'); })
+			// Correct multiple commas into one
+			.replace(/,+/gi, ',')
+			// More than three dots should be only three, an elipsis
 			.replace(/\.\.\.+/gi, '@@@²@@@')
+			// Correct multiple dots into one
 			.replace(/\.+/gi, '.')
+			// Correct full stops interspersed by spaces
 			.replace(/[.]([ ]+[.]+)+/gi, '.')
+			// Correct full stop followed by other punctuation
 			.replace(/\.\?/gi, '?')
 			.replace(/\.:/gi, ':')
-			.replace(/\?\?+/gi, '?') /* Fix question mark repetition */
-			.replace(/!!+/gi, '!') /* Fix exclamation mark repettition */
-			.replace(/(?!\w) ([.!?])/gi, '$1') /* Fix (single) space before punctuation mark */
+			// Reduce multiple question mark
+			.replace(/\?\?+/gi, '?')
+			// Reduce multiple exclamation mark
+			.replace(/!!+/gi, '!')
 			;return body;
 		},
 
@@ -170,6 +179,7 @@ EmbedFunctionOnPage('CorrectBody', function(original_body) {
 
 		ProperSpacesAroundPunctuationMarks : function (body) {
 			body = body
+			// Fix (insert) space after punctuation mark; remove spaces before punctuation mark
 			.replace(/(((http:\/\/|https:\/\/|ftp:\/\/|www\.)[a-zA-Z0-9\/.%_#~-]*)|(http:\/\/|https:\/\/|ftp:\/\/)?([0-9]+[.]?)+)?([ ]*[.:!?,]+[ ]*)/gi, function (orig,look,_,_,_,_,match) { return look?orig:match.trim().substring(0,1) + ' '; })
 			// Handle special cases
 			.replace(/www\.[ ]/gi, 'www.')
@@ -246,7 +256,7 @@ EmbedFunctionOnPage('CorrectBody', function(original_body) {
 		CorrectScriptMistakes : function(body) {
 			body = body
 
-			// CorrectMarks
+			// CorrectRepeatedPunctuation
 			.replace('@@@²@@@', '...')
 			;return body;
 		},
