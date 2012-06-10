@@ -226,7 +226,7 @@ EmbedFunctionOnPage('CorrectBody', function(original_body) {
 			body = body
 			.replace(/\b([A-Za-z]+)((?:\.|\?|\!)[ ])([a-z])/gi, function(_, word, one, two) { return word + one + two.toUpperCase(); })
 			// Capitalize the first letter of each new sentence.
-			.replace(/(^|(?:\. ))([a-z])/gm, function(match,prefix,letter) { return prefix + letter.toUpperCase(); })
+			.replace(/(^|(?:\. )|(?:- ))([a-z])/gm, function(match,prefix,letter) { return prefix + letter.toUpperCase(); })
 			// Handle some special cases
 			.replace(/Http:\/\//gi, 'http://')
 			.replace(/Ftp:\/\//gi, 'ftp://')
