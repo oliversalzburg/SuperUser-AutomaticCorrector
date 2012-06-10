@@ -72,7 +72,7 @@ EmbedFunctionOnPage('CorrectBody', function(original_body) {
 				'cud':'could',
 				'pl[sz]':'please',
 				'(can|doesn|don|won|hasn|haven|isn|didn)t':'$1\'t',
-				'ubunto|ubunut|ubunutu|ubunu|ubntu|ubutnu|uuntu|unbuntu|ubunt|ubutu':'Ubuntu',
+				'(?:ubunto|ubunut|ubunutu|ubunu|ubntu|ubutnu|uuntu|unbuntu|ubunt|ubutu)':'Ubuntu',
 				'ty':'Thank you',
 				'n1':'Nice one',
 				'any1':'anyone',
@@ -250,7 +250,7 @@ EmbedFunctionOnPage('CorrectBody', function(original_body) {
 			;return body;
 		},
 	};
-	
+
 	codeBlocks = original_body.match(/(^[ ]{4}(.|([\r\n][ ]{4}))*)|`[^`]*`|<pre>[^<]*<\/pre>/gim);
 	textOnly = original_body;
 	if( null != codeBlocks ) {
@@ -261,7 +261,7 @@ EmbedFunctionOnPage('CorrectBody', function(original_body) {
 
 	for (var correction in corrections)
 		textOnly = corrections[correction](textOnly);
-		
+
 	// Place code blocks back in
 	correctedBody = textOnly;
 	if( null != codeBlocks ) {
