@@ -194,24 +194,18 @@ EmbedFunctionOnPage('CorrectBody', function(originalBody) {
 			;return body;
 		},
 
-		RemoveSentences : function(body) {
+		RemoveUnnecessarySentences : function(body) {
 			body = body
-			.replace(/I have this (?:problem|issue)(?: too)?[.:!, ]*/gi, '')
-			.replace(/I am stumped[.:!, ]*/gi, '')
+			.replace(/(?:, |many )?(?:thank|k?thn?x(?:bye)?)(?:s|(?: |-)you)?(?: (?:so|very) much)?(?:\s?(?:,|-)(?:[\w\s]+)| :-?\)| a lot| and regards| for(?: any| the| your)? (?:help|ideas)| in advance)?[.|!]?/i, '')
 			.replace(/Thanks for help(?:ing)?(?: me)?[.:!, ]*/gi, '')
-			.replace(/^ *[b|B]ut */gim, '')
+			.replace(/^[A-Za-z ]*hope this helps[A-Za-z ?!.]*$/gim, '')
+			.replace(/I have this (?:problem|issue)(?: too)?[.:!, ]*/gi, '')
 			.replace(/What [cw]ould be the (?:problem|issue)[.:!?, ]*/gim, '')
-			.replace(/^Wow[.:!?, ]*/gi, '')
+			.replace(/I am stumped[.:!, ]*/gi, '')
 			.replace(/(?:Please|Help\b|Thanks?)[.?!,]*/gi, '')
+			.replace(/^Wow[.:!?, ]*/gi, '')
+			.replace(/^ *[b|B]ut */gim, '')
 			;return body;
-		},
-
-		RemoveHTH : function(body) {
-			return body.replace(/^[A-Za-z ]*hope this helps[A-Za-z ?!.]*$/gim, '');
-		},
-
-		RemoveThankYou : function(body) {
-			return body.replace(/(?:, |many )?(?:thank|k?thn?x(?:bye)?)(?:s|(?: |-)you)?(?: (?:so|very) much)?(?:\s?(?:,|-)(?:[\w\s]+)| :-?\)| a lot| and regards| for(?: any| the| your)? (?:help|ideas)| in advance)?[.|!]?/i, '');
 		},
 
 		CorrectLists : function(body) {
@@ -266,9 +260,10 @@ EmbedFunctionOnPage('CorrectBody', function(originalBody) {
 
 		CorrectScriptMistakes : function(body) {
 			body = body
-
 			// CorrectRepeatedPunctuation
 			.replace(/@@@²@@@/gi, '...')
+			// Replace punctutation marks at the end that don't make any sense.
+			.replace(/[,;][ \r\n]*$/, '.')
 			;return body;
 		},
 	};
