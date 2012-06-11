@@ -281,7 +281,8 @@ EmbedFunctionOnPage('CorrectBody', function(originalBody) {
 
 	// Find extra stuff that can be turned into code blocks.
 	correctedBody = correctedBody
-	.replace(/\b .exe\b/gi, function(_) { retain.push(' `.exe`'); return MARKER + (retain.length - 1); });
+	.replace(/\b .exe\b/gi, function(_) { retain.push(' `.exe`'); return MARKER + (retain.length - 1); })
+	.replace(/\babout:config\b/gi, function(_) { retain.push('`about:config`'); return MARKER + (window.retain.length - 1); });
 
 	// Run cleanup process.
 	for (var correction in corrections)
