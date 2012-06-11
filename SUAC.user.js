@@ -101,7 +101,7 @@ EmbedFunctionOnPage('CorrectBody', function(originalBody) {
 			// This second batch of replacements can apply anywhere in the text
 			var variableReplacements = {
 				'\\bwindow$':'Windows',
-				'\\b(a)n(?= +(?![aeiou]|HTML|user))':'$1',
+				'\\b(a)n(?= +(?![aeiou]|HTML|user|hour))':'$1',
 				'\\b(a)(?= +[aeiou](?!ser))':'$1n',
 				'^[ ]*((?:any|some)(?:one|body)) have':function (_,first) { return 'Does ' + first.toLowerCase() + ' have'; }
 			};
