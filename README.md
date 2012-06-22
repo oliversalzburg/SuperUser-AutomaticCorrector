@@ -42,6 +42,6 @@ After installing, you need to refresh any page you want this user script to be a
 5. You can CTRL+Z to undo the corrections all at once.
 6. If you press a key, the diff will go away and show a preview again.
 
-**If you come across mistakes, have ideas or feature requests; [*report them please*](https://github.com/TomWij/SuperUser-AutomaticCorrector/issues).**
+**If you come across mistakes, have ideas or feature requests; [*report them please*](https://github.com/TomWij/SuperUser-AutomaticCorrector/issues).** (Alternative ways to contact [here](https://github.com/TomWij/SuperUser-AutomaticCorrector/blob/master/README.md#feature-requests-and-issues))
 
 *Thank you and have fun editing (or drink a coffee while it edits for you)...*
