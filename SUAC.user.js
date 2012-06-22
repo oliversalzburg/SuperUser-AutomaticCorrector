@@ -202,7 +202,7 @@ EmbedFunctionOnPage('CorrectBody', function(originalBody) {
 			.replace(/I have this (?:problem|issue)(?: too)?[.:!, ]*/gi, '')
 			.replace(/What [cw]ould be the (?:problem|issue)[.:!?, ]*/gim, '')
 			.replace(/I am stumped[.:!, ]*/gi, '')
-			.replace(/(?:Please|Help\b|Thanks?)[.?!,]*/gi, '')
+			.replace(/(?:Please|(?!(?:may|can|will|click(?: on| on the)?) )Help(?! (?:files?|document(?:ation|s?)))\b|Thanks?)[.?!,]*/gi, '')
 			.replace(/^Wow[.:!?, ]*/gi, '')
 			.replace(/^ *[b|B]ut */gim, '')
 			;return body;
