@@ -139,9 +139,9 @@ EmbedFunctionOnPage('CorrectBody', function(originalBody) {
 
 		GetRidOfSmileys : function (body) {
 			body = body
-			.replace(/:-\)/gi, '').replace(/:\)/gi, '').replace(/:-\(/gi, '').replace(/:\(/gi, '')
-			.replace(/;-\)/gi, '').replace(/;\)/gi, '').replace(/:-D/gi, '').replace(/:D/gi, '')
-			.replace(/:-O/gi, '').replace(/:O/gi, '').replace(/:-S/gi, '').replace(/:S/gi, '')
+			.replace(/:-\)/gi, '').replace(/:\)/gi, '').replace(/:-\(/gi, '').replace(/(?![A-Za-z0-9]):\(/gi, '')
+			.replace(/;-\)/gi, '').replace(/;\)/gi, '').replace(/:-D/gi, '').replace(/(?![A-Za-z0-9]):D/gi, '')
+			.replace(/:-O/gi, '').replace(/(?![A-Za-z0-9]):O/gi, '').replace(/:-S/gi, '').replace(/(?![A-Za-z0-9]):S/gi, '')
 			;return body;
 		},
 
