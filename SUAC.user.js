@@ -385,5 +385,29 @@ EmbedFunctionOnPageAndExecute(function() {
 				toolbar.parents('.post-editor').find('.wmd-preview').html(diffString(original, corrected).replace(/\n/g, '<br />'));
 			});
 		}, 100);
-	});
+	
+	
+	window.setTimeout(function() {
+		AddToolbarButton(toolbar, 'http://i.stack.imgur.com/wWIIc.png', 'Keyboard Markup',
+			function() {
+				var editor = toolbar.parents('.wmd-container').find('.wmd-input');
+				
+				var selectionStart = editor[ 0 ].selectionStart;
+				var selectionEnd   = editor[ 0 ].selectionEnd;
+				
+				if( ' ' == editor.val().substring( selectionEnd - 1, selectionEnd ) ) {
+					--selectionEnd;
+				}
+				
+				editor.val(
+					editor.val().substring( 0, selectionStart )
+					+ "<kbd>"
+					+ editor.val().substring( selectionStart, selectionEnd )
+					+ "</kbd>"
+					+ editor.val().substring( selectionEnd )
+				);
+				
+			});
+		}, 100);
+  });
 });
